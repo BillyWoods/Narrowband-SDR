@@ -1,0 +1,4 @@
+(sym_lib_table
+  (lib (name MAX11131AUI)(type Legacy)(uri ${KIPRJMOD}/lib/MAX11131AUI.lib)(options "")(descr ""))
+  (lib (name MSi001)(type Legacy)(uri /home/billy/SDR_FYP/SDR_board/lib/MSi001.lib)(options "")(descr ""))
+)
