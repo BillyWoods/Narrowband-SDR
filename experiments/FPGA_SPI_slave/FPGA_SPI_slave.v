@@ -5,12 +5,11 @@
  * It also provides a divided clock output for help with debugging;
  * it can be physically jumpered in as the clock signals.
  */
-module FPGA_SPI_slave(nCS1, SCLK1, DIN1, DOUT1,
-							 nCS2, SCLK2, DIN2, DOUT2,
+module FPGA_SPI_slave(nCS1, SCLK1, DOUT1,
+							 nCS2, SCLK2, DOUT2,
 							 dbg_sclk, sys_clk);
 	input nCS1, nCS2;
 	input SCLK1, SCLK2;
-	input DIN1, DIN2;
 	output DOUT1, DOUT2;
 	output dbg_sclk; // 
 	input sys_clk; // the system's 50 MHz clock
@@ -18,10 +17,10 @@ module FPGA_SPI_slave(nCS1, SCLK1, DIN1, DOUT1,
 	// ----------------------------------
 	// Wire up some of these SPI modules
 	// ----------------------------------
-	SPI_slave simulated_ADC1(.nCS(nCS1), .SCLK(dbg_sclk), .DIN(DIN1), .DOUT(DOUT1));
-	//SPI_slave simulated_ADC1(.nCS(nCS1), .SCLK(SCLK1), .DIN(DIN1), .DOUT(DOUT1));
+	SPI_slave simulated_ADC1(.nCS(nCS1), .SCLK(dbg_sclk), .DOUT(DOUT1));
+	//SPI_slave simulated_ADC1(.nCS(nCS1), .SCLK(SCLK1), .DOUT(DOUT1));
 	
-	SPI_slave simulated_ADC2(.nCS(nCS2), .SCLK(SCLK2), .DIN(DIN2), .DOUT(DOUT2));
+	SPI_slave simulated_ADC2(.nCS(nCS2), .SCLK(SCLK2), .DOUT(DOUT2));
 	
 	
 	// --------------------------------
