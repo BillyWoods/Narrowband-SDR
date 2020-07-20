@@ -70,10 +70,17 @@ module SPI_slave(nCS, SCLK, DOUT);
 	combinational logic for determining the next value of bit_ptr
 	*/
 	always @(*) begin
-		if (nCS == 1 && bit_ptr < 4'b1111 && bit_ptr > 4'b0110)
+		if (nCS == 1 && bit_ptr < 4'b1111 && bit_ptr > 4'b0110) begin
+			// special condition for off/'low power mode'
 			bit_ptr_next = 4'b0000;
-		else
+		end
+		else if (bit_ptr > 4'b0000 || nCS == 0) begin
+			// usually decrement, but only allow 0000 -> 1111 when nCS is low
 			bit_ptr_next = bit_ptr - 1;
+		end
+		else begin
+			bit_ptr_next = bit_ptr;
+		end
 	end
 endmodule
 
