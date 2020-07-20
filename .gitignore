@@ -183,3 +183,8 @@ fp-info-cache
 #*.xml
 #*.csv
 
+
+#
+# For Mac OSX
+#
+.DS_Store
