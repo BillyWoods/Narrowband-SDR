@@ -51,28 +51,29 @@ set_global_assignment -name USE_CONFIGURATION_DEVICE ON
 set_global_assignment -name RESERVE_ALL_UNUSED_PINS "AS INPUT TRI-STATED WITH WEAK PULL-UP"
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
-set_instance_assignment -name FAST_INPUT_REGISTER ON -to sys_clk
-set_instance_assignment -name FAST_INPUT_REGISTER ON -to SCLK2
-set_instance_assignment -name FAST_INPUT_REGISTER ON -to SCLK1
 set_location_assignment PIN_17 -to sys_clk
-set_location_assignment PIN_139 -to DIN1
-set_location_assignment PIN_141 -to DIN2
-set_location_assignment PIN_142 -to DOUT1
-set_location_assignment PIN_143 -to DOUT2
-set_location_assignment PIN_136 -to nCS1
-set_location_assignment PIN_137 -to nCS2
-set_location_assignment PIN_134 -to SCLK1
-set_location_assignment PIN_135 -to SCLK2
-set_location_assignment PIN_132 -to dbg_sclk
-set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to dbg_sclk
-set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to nCS1
-set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to nCS2
-set_global_assignment -name VERILOG_FILE SPI_slave.v
-set_global_assignment -name VERILOG_FILE FPGA_SPI_slave.v
-set_global_assignment -name VERILOG_FILE mux_16to1.v
+set_global_assignment -name VERILOG_FILE SPI_slave.v -hdl_version SystemVerilog_2005
+set_global_assignment -name VERILOG_FILE FPGA_SPI_slave.v -hdl_version SystemVerilog_2005
+set_global_assignment -name VERILOG_FILE mux_16to1.v -hdl_version SystemVerilog_2005
 set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (VHDL)"
 set_global_assignment -name EDA_OUTPUT_DATA_FORMAT VHDL -section_id eda_simulation
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_location_assignment PIN_143 -to dbg_SCLK
+set_location_assignment PIN_142 -to SCLK
+set_location_assignment PIN_139 -to nCS
+set_location_assignment PIN_141 -to dbg_nCS
+set_location_assignment PIN_136 -to DOUT[0]
+set_location_assignment PIN_134 -to DOUT[1]
+set_location_assignment PIN_132 -to DOUT[2]
+set_location_assignment PIN_126 -to DOUT[3]
+set_location_assignment PIN_122 -to DOUT[4]
+set_location_assignment PIN_120 -to DOUT[5]
+set_location_assignment PIN_118 -to DOUT[6]
+set_location_assignment PIN_114 -to DOUT[7]
+set_global_assignment -name VHDL_INPUT_VERSION VHDL_2008
+set_global_assignment -name VHDL_SHOW_LMF_MAPPING_MESSAGES OFF
+set_global_assignment -name VERILOG_INPUT_VERSION SYSTEMVERILOG_2005
+set_global_assignment -name VERILOG_SHOW_LMF_MAPPING_MESSAGES OFF
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
