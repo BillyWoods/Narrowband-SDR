@@ -2,7 +2,7 @@ What we need to do here:
 	* Generate a 48MHz clock for the SPI bus (see the IFCLK)
 	* Generate an nCS signal compliant with the MAX19777's usage of the CS line (see the CTL lines)
 	* Capture 8 data input lines, read on every rising edge of the 48MHz clock (see the FD lines)
-	* Present the FX2LP FIFO buffers over USB
+	* Setup the USB endpoint side of the FIFO buffers
 	
 	
 Notes below pulled from datasheet "AN66806 - Getting Started With EZ-USB FX2LP GPIF". Emphasis added.
