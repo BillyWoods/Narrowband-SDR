@@ -2,6 +2,7 @@ What we need to do here:
 	* Generate a 48MHz clock for the SPI bus (see the IFCLK)
 	* Generate an nCS signal compliant with the MAX19777's usage of the CS line (see the CTL lines)
 	* Capture 8 data input lines, read on every rising edge of the 48MHz clock (see the FD lines)
+	* Present the FX2LP FIFO buffers over USB
 	
 	
 Notes below pulled from datasheet "AN66806 - Getting Started With EZ-USB FX2LP GPIF". Emphasis added.
@@ -20,3 +21,6 @@ The data bus is the conduit for payload data transferred between FX2LP endpoint 
 It can be configured to operate as an **8-bit** or 16-bit interface and can be tristated if the system requires it. In 16-bit
 mode, FD[7:0] represents the first byte in the endpoint FIFO and FD[15:8] represents the second byte. 
 
+6 GSTATE[2:0] (output only)
+Debug output signals represent the states executed in a GPIF waveform. These are connected to a logic analyzer for
+debug purposes.
