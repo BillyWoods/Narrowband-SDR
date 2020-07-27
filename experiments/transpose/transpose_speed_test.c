@@ -5,7 +5,7 @@
 #include <time.h>
 #include <string.h>
 
-//#define DEBUG_PRINT
+#define DEBUG_PRINT
 
 const int num_samples = 96000000; // 3 million samples per second from the ADC
 
@@ -147,8 +147,8 @@ inline void fast_transpose(uint8_t in[16], uint16_t out[8]) {
   // stage 4.3
   t = out_64[0] & 0xFFFFFFFF00000000;
   t1 = out_64[1] & 0x00000000FFFFFFFF;
-  out_64[0] = (out_64[0] ^ t) ^ (t1 >> 32);
-  out_64[1] = (out_64[1] ^ t1) ^ (t << 32);
+  out_64[0] = (out_64[0] ^ t) ^ (t1 << 32);
+  out_64[1] = (out_64[1] ^ t1) ^ (t >> 32);
   // current channel ordering: LSB {0, 1, 2, 3, 4, 5, 6, 7} MSB
 #ifdef DEBUG_PRINT
   printf("\nAfter interleaving the LSBytes in:\n");
