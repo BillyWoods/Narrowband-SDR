@@ -43,9 +43,9 @@ int main(void) {
   time_t end_t; time(&end_t);
   double cpu_time = ((double) cpu_t) / CLOCKS_PER_SEC;
   double real_time = difftime(end_t, start_t);
-  int bits_xferred = 16 * num_samples;
+  double bits_xferred = 16.f * 8.f * num_samples;
   double bitrate = bits_xferred / (real_time > cpu_time ? real_time : cpu_time);
-  printf("Bits processed: %d\nProcessor time: %.1f\nReal time: %.1f\nBitrate: %.2f bits/s\n",
+  printf("Bits processed: %.0f\nProcessor time: %.1f\nReal time: %.1f\nBitrate: %.2f bits/s\n",
     bits_xferred,
     cpu_time,
     real_time,
