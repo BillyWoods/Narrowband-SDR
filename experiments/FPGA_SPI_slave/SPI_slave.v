@@ -43,14 +43,16 @@ module SPI_slave(nCS, SCLK, DOUT);
 	reg [3:0]	bit_ptr = 0; // an index in word_out
 	reg [3:0]	bit_ptr_next;
 	
+	parameter increment = 1;
+	
 	/*
 	"A high-to-low transition on CS samples
 	 the analog inputs and initiates a new frame."
 	 */
 	always @(negedge nCS) begin
 		// We'll increment our 12-bit counter to simulate a new sample being taken.
-		if (sample < 12'b111111111111) begin
-			sample <= sample + 1;
+		if (sample < 12'b111111111111 - increment) begin
+			sample <= sample + increment;
 		end
 		else begin
 			sample <= 0;

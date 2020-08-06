@@ -20,12 +20,17 @@ module FPGA_SPI_slave(nCS, SCLK, DOUT,
 	// ----------------------------------
 	// Wire up some of these SPI modules
 	// ----------------------------------
+	genvar i;
 	generate
-		if (internal_loopback == 1) begin
-			SPI_slave simulated_ADC[7:0](.nCS(dbg_nCS), .SCLK(dbg_SCLK), .DOUT(DOUT));
-		end
-		else begin
-			SPI_slave simulated_ADC[7:0](.nCS(nCS), .SCLK(SCLK), .DOUT(DOUT));
+		for (i = 0; i < 8; i = i + 1) begin : simulated_ADCs
+			if (internal_loopback == 1) begin
+				SPI_slave simulated_ADC(.nCS(dbg_nCS), .SCLK(dbg_SCLK), .DOUT(DOUT[i]));
+				defparam simulated_ADC.increment = i + 1;
+			end
+			else begin
+				SPI_slave simulated_ADC(.nCS(nCS), .SCLK(SCLK), .DOUT(DOUT[i]));
+				defparam simulated_ADC.increment = i + 1;
+			end
 		end
 	endgenerate
 	
@@ -78,9 +83,8 @@ module tb_FPGA_SPI_slave;
 	wire dbg_nCS;
 	wire dbg_SCLK;
 	
-	FPGA_SPI_slave test_module
-						(nCS, SCLK, DOUT,
-					   sys_clk, dbg_nCS, dbg_SCLK);
+	FPGA_SPI_slave test_module(nCS, SCLK, DOUT,
+										sys_clk, dbg_nCS, dbg_SCLK);
 	defparam test_module.internal_loopback = 1;
 	
 	initial begin
