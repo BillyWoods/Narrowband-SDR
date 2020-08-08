@@ -14,12 +14,14 @@ select edge, rising, or falling as the active edge. As an input signal, it can b
 
 CTL[5:0] (output only)
 Control outputs provide signals required by the external peripheral such as **read/write strobes, enables,** and divided
-clock
+clock. Only CTL[3:0] are available on the 56-pin package.
+
 
 FD[15:0] (bidirectional)
 The data bus is the conduit for payload data transferred between FX2LP endpoint FIFOs and the external peripheral.
 It can be configured to operate as an **8-bit** or 16-bit interface and can be tristated if the system requires it. In 16-bit
-mode, FD[7:0] represents the first byte in the endpoint FIFO and FD[15:8] represents the second byte. 
+mode, FD[7:0] represents the first byte in the endpoint FIFO and FD[15:8] represents the second byte.
+FD[7:0] maps to PB[7:0] on the 56-pin package.
 
 6 GSTATE[2:0] (output only)
 Debug output signals represent the states executed in a GPIF waveform. These are connected to a logic analyzer for
