@@ -1,4 +1,4 @@
-#!/bin/env python
+#!/usr/bin/python
 
 import sys,re
 
@@ -14,7 +14,7 @@ if __name__=='__main__':
     datre = re.compile ( 'const char xdata .*?\};', re.S )
     data = datre.findall(f)
     for dat in data:
-        o.write(dat.replace('\r\n','\n'))
+        o.write(dat.replace('\r\n','\n').replace('xdata', '__xdata'))
         o.write('\n')
     o.close()
 
