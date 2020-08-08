@@ -25,7 +25,7 @@
 // CTL 1    = REN#     CMOS        
 // CTL 2    = OE#      CMOS        
 // CTL 3    = CTL3     CMOS        
-// CTL 4    = CTL4     Op Drain    
+// CTL 4    = CTL4     CMOS        
 // CTL 5    = CTL5     CMOS        
                                
 // GPIF Rdy Inputs         
@@ -194,7 +194,7 @@ const char xdata FlowStates[36] =
 // DO NOT EDIT ...                                               
 const char xdata InitData[7] =                                   
 {                                                                
-/* Regs  */ 0xE0,0x10,0x00,0x01,0xEE,0x4E,0x00     
+/* Regs  */ 0xE0,0x00,0x00,0x01,0xEE,0x4E,0x00     
 };                                                               
 // END DO NOT EDIT                                               
                                                                  
