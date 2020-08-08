@@ -17,8 +17,9 @@
 
 
 # change location of fx2libdir if needed
-SOURCES=main.c device.c gpif_dat.c
-A51_SOURCES=dscr.a51
+INCLUDES=./include
+SOURCES=main.c gpif_dat.c gpif-acquisition.c 
+#A51_SOURCES=
 BASENAME=main
 
 
