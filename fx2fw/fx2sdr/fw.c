@@ -42,32 +42,7 @@ extern void main_init();
 
 void main() {
 
-#ifdef DEBUG_FIRMWARE
- SETCPUFREQ(CLK_48M); // required for sio0_init 
- // main_init can still set this to whatever you want.
- sio0_init(57600); // needed for printf if debug defined 
-#endif
-
  main_init();
-
- // set up interrupts.
- USE_USB_INTS();
- 
- ENABLE_SUDAV();
- ENABLE_USBRESET();
- ENABLE_HISPEED(); 
- ENABLE_SUSPEND();
- ENABLE_RESUME();
-
- EA=1;
-
-// iic files (c2 load) don't need to renumerate/delay
-// trm 3.6
-#ifndef NORENUM
- RENUMERATE();
-#else
- USBCS &= ~bmDISCON;
-#endif
  
  while(TRUE) {
 

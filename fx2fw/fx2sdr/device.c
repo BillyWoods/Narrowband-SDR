@@ -16,9 +16,15 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  **/
 
+#include <fx2regs.h>
 #include <fx2macros.h>
+#include <fx2ints.h>
+#include <autovector.h>
 #include <delay.h>
+#include <setupdat.h>
 #include <eputils.h>
+#include <gpif.h>
+
 
 #ifdef DEBUG_FIRMWARE
 #include <stdio.h>
@@ -147,6 +153,12 @@ static void setup_endpoints(void)
 */
 void main_init() {
 
+#ifdef DEBUG_FIRMWARE
+ SETCPUFREQ(CLK_48M); // required for sio0_init 
+ // main_init can still set this to whatever you want.
+ sio0_init(57600); // needed for printf if debug defined 
+#endif
+
   REVCTL=3;
   SETIF48MHZ();
 
@@ -157,7 +169,24 @@ void main_init() {
 
   // config gpif
 
-  printf ( "Initialization Done.\n" );
+ // set up interrupts.
+ USE_USB_INTS();
+ 
+ ENABLE_SUDAV();
+ ENABLE_USBRESET();
+ ENABLE_HISPEED(); 
+ ENABLE_SUSPEND();
+ ENABLE_RESUME();
+
+ EA=1;
+
+// iic files (c2 load) don't need to renumerate/delay
+// trm 3.6
+#ifndef NORENUM
+ RENUMERATE();
+#else
+ USBCS &= ~bmDISCON;
+#endif
 
 }
 
