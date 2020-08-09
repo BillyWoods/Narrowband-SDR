@@ -25,7 +25,8 @@
 #endif
 
 BOOL handle_get_descriptor() {
-
+  // by returning FALSE, _handle_get_descriptor in fx2lib/includes/setupdat.c takes over
+  return FALSE;
 }
 
 //************************** Configuration Handlers *****************************
