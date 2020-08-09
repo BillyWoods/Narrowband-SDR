@@ -34,7 +34,7 @@
 
 
 volatile __bit dosuspend=FALSE;
-volatile __bit got_sud;
+volatile __bit got_sud=FALSE;
 
 // custom functions
 extern void main_loop();
@@ -43,7 +43,6 @@ extern void main_init();
 
 void main() {
 
- got_sud = FALSE;
  main_init();
  
  while(TRUE) {

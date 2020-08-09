@@ -172,15 +172,15 @@ void main_init() {
 	ENABLE_HISPEED();
 	ENABLE_USBRESET();
 
-	LED_INIT();
-	LED_ON();
-
-	/* Init timer2. */
-	RCAP2L = -500 & 0xff;
-	RCAP2H = (-500 & 0xff00) >> 8;
-	T2CON = 0;
-	ET2 = 1;
-	TR2 = 1;
+//  LED_INIT();
+//  LED_ON();
+//  
+//  /* Init timer2. */
+//  RCAP2L = -500 & 0xff;
+//  RCAP2H = (-500 & 0xff00) >> 8;
+//  T2CON = 0;
+//  ET2 = 1;
+//  TR2 = 1;
 
 	/* Global (8051) interrupt enable. */
 	EA = 1;
