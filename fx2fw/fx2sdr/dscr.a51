@@ -21,8 +21,10 @@
 ;;
 
 
-VID = 0x501D    ; Manufacturer ID (0x1D50)
-PID = 0x8C60    ; Product ID (0x608C)
+;; these VID/PID ARE FOR INTERNAL TESTING ONLY
+;; http://pid.codes/1209/0001/
+VID = 0x0912    ; Manufacturer ID (0x1209)
+PID = 0x0100    ; Product ID (0x0001)
 
 
 ;; from include/common.inc in Sigrok fx2lafw project
