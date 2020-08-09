@@ -29,11 +29,12 @@
 #define printf(...)
 #endif
 
+#include "fw.h"
 
 
 
-volatile __bit dosud=FALSE;
 volatile __bit dosuspend=FALSE;
+volatile __bit got_sud;
 
 // custom functions
 extern void main_loop();
@@ -42,14 +43,15 @@ extern void main_init();
 
 void main() {
 
+ got_sud = FALSE;
  main_init();
  
  while(TRUE) {
 
      main_loop();
 
-     if (dosud) {
-       dosud=FALSE;
+     if (got_sud) {
+       got_sud=FALSE;
        handle_setupdata();
      }
 
@@ -92,7 +94,7 @@ void resume_isr() __interrupt RESUME_ISR {
 }
   
 void sudav_isr() __interrupt SUDAV_ISR {
- dosud=TRUE;
+ got_sud=TRUE;
  CLEAR_SUDAV();
 }
 void usbreset_isr() __interrupt USBRESET_ISR {

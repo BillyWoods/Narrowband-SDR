@@ -32,10 +32,15 @@
 #define printf(...)
 #endif
 
-#define SYNCDELAY SYNCDELAY4 // SYNCDELAY4 from delay.h
+#include "fw.h"
+
+
+
+BYTE vendor_command;
 
 /*
 * These handlers fill out the pre-defs which fx2lib/includes/setupdat.c is looking for:
+*
     extern BOOL handle_get_descriptor();
     extern BOOL handle_vendorcommand(BYTE cmd);
     extern BOOL handle_set_configuration(BYTE cfg);
@@ -146,48 +151,45 @@ static void setup_endpoints(void)
 
 //********************  INIT ***********************
 /*
-* See fw.c for other init stuff which is done before main_init
-* (just setting up USART for debug, if flag for that is set)
-* and the stuff done after main_init (USB setup, global interrupt
-* enable, USB re-enumeration,
+* this comes from fx2lafw_init in the Sigrok fx2lafw project
 */
 void main_init() {
+	/* Set DYN_OUT and ENH_PKT bits, as recommended by the TRM. */
+	REVCTL = bmNOAUTOARM | bmSKIPCOMMIT;
 
-#ifdef DEBUG_FIRMWARE
- SETCPUFREQ(CLK_48M); // required for sio0_init 
- // main_init can still set this to whatever you want.
- sio0_init(57600); // needed for printf if debug defined 
-#endif
+	vendor_command = 0;
 
-  REVCTL=3;
-  SETIF48MHZ();
+	/* Renumerate. */
+	RENUMERATE_UNCOND();
 
-  // set IFCONFIG
+	SETCPUFREQ(CLK_48M);
 
-  // config your endpoints etc.
-  setup_endpoints();
+	USE_USB_INTS();
 
-  // config gpif
+	/* TODO: Does the order of the following lines matter? */
+	ENABLE_SUDAV();
+	ENABLE_EP2IBN();
+	ENABLE_HISPEED();
+	ENABLE_USBRESET();
 
- // set up interrupts.
- USE_USB_INTS();
- 
- ENABLE_SUDAV();
- ENABLE_USBRESET();
- ENABLE_HISPEED(); 
- ENABLE_SUSPEND();
- ENABLE_RESUME();
+	LED_INIT();
+	LED_ON();
 
- EA=1;
+	/* Init timer2. */
+	RCAP2L = -500 & 0xff;
+	RCAP2H = (-500 & 0xff00) >> 8;
+	T2CON = 0;
+	ET2 = 1;
+	TR2 = 1;
 
-// iic files (c2 load) don't need to renumerate/delay
-// trm 3.6
-#ifndef NORENUM
- RENUMERATE();
-#else
- USBCS &= ~bmDISCON;
-#endif
+	/* Global (8051) interrupt enable. */
+	EA = 1;
 
+	/* Setup the endpoints. */
+	setup_endpoints();
+
+	/* Put the FX2 into GPIF master mode and setup the GPIF. */
+	//gpif_init_la();
 }
 
 

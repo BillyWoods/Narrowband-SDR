@@ -99,6 +99,9 @@
 #define ENABLE_EP2() EPIE|=bmEP2
 #define CLEAR_EP2() CLEAR_USBINT(); EPIRQ=bmEP2
 
+#define ENABLE_IBN() NAKIE |= bmIBN;
+#define ENABLE_EP2IBN() ENABLE_IBN(); IBNIE |= bmEP2IBN;
+
 #define ENABLE_EP4() EPIE|=bmEP4
 #define CLEAR_EP4() CLEAR_USBINT(); EPIRQ=bmEP4
 
