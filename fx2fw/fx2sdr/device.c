@@ -17,12 +17,27 @@
  **/
 
 #include <fx2macros.h>
+#include <delay.h>
+#include <eputils.h>
 
 #ifdef DEBUG_FIRMWARE
 #include <stdio.h>
 #else
 #define printf(...)
 #endif
+
+#define SYNCDELAY SYNCDELAY4 // SYNCDELAY4 from delay.h
+
+/*
+* These handlers fill out the pre-defs which fx2lib/includes/setupdat.c is looking for:
+    extern BOOL handle_get_descriptor();
+    extern BOOL handle_vendorcommand(BYTE cmd);
+    extern BOOL handle_set_configuration(BYTE cfg);
+    extern BOOL handle_get_interface(BYTE ifc, BYTE* alt_ifc);
+    extern BOOL handle_set_interface(BYTE ifc,BYTE alt_ifc);
+    extern BYTE handle_get_configuration();
+    extern void handle_reset_ep(BYTE ep); <-- does not appear to ever be used in setupdat.c
+*/
 
 BOOL handle_get_descriptor() {
   // by returning FALSE, _handle_get_descriptor in fx2lib/includes/setupdat.c takes over
@@ -75,19 +90,74 @@ BOOL handle_vendorcommand(BYTE cmd) {
  return FALSE; // not handled by handlers
 }
 
+/**********************************************************
+* USB endpoint setup.
+**********************************************************
+* derived from fx2lafw.c in the Sigrok project
+*/
+static void setup_endpoints(void)
+{
+	/* Setup EP2 (IN). */
+	EP2CFG = (1u << 7) |		  /* EP is valid/activated */
+		 (1u << 6) |		  /* EP direction: IN */
+		 (1u << 5) | (0u << 4) |  /* EP Type: bulk */
+		 (1u << 3) |		  /* EP buffer size: 1024 */
+		 (0u << 2) |		  /* Reserved. */
+		 (0u << 1) | (0u << 0);	  /* EP buffering: quad buffering */
+	SYNCDELAY;
+
+	/* Disable all other EPs (EP1, EP4, EP6, and EP8). */
+	EP1INCFG &= ~bmVALID;
+	SYNCDELAY;
+	EP1OUTCFG &= ~bmVALID;
+	SYNCDELAY;
+	EP4CFG &= ~bmVALID;
+	SYNCDELAY;
+	EP6CFG &= ~bmVALID;
+	SYNCDELAY;
+	EP8CFG &= ~bmVALID;
+	SYNCDELAY;
+
+	/* EP2: Reset the FIFOs. */
+	/* Note: RESETFIFO() gets the EP number WITHOUT bit 7 set/cleared. */
+	RESETFIFO(0x02);
+
+	/* EP2: Enable AUTOIN mode. Set FIFO width to 8bits. */
+	EP2FIFOCFG = bmAUTOIN;
+	SYNCDELAY;
+
+	/* EP2: Auto-commit 512 (0x200) byte packets (due to AUTOIN = 1). */
+	EP2AUTOINLENH = 0x02;
+	SYNCDELAY;
+	EP2AUTOINLENL = 0x00;
+	SYNCDELAY;
+
+	/* EP2: Set the GPIF flag to 'full'. */
+	EP2GPIFFLGSEL = (1 << 1) | (0 << 1);
+	SYNCDELAY;
+}
+
 
 //********************  INIT ***********************
-
+/*
+* See fw.c for other init stuff which is done before main_init
+* (just setting up USART for debug, if flag for that is set)
+* and the stuff done after main_init (USB setup, global interrupt
+* enable, USB re-enumeration,
+*/
 void main_init() {
 
- REVCTL=3;
- SETIF48MHZ();
+  REVCTL=3;
+  SETIF48MHZ();
 
- // set IFCONFIG
- // config your endpoints etc.
- // config gpif
- 
- printf ( "Initialization Done.\n" );
+  // set IFCONFIG
+
+  // config your endpoints etc.
+  setup_endpoints();
+
+  // config gpif
+
+  printf ( "Initialization Done.\n" );
 
 }
 

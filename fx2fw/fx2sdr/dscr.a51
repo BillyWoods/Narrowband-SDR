@@ -195,9 +195,9 @@ _dev_strings:
   ; See http://www.usb.org/developers/docs/USB_LANGIDs.pdf for the full list.
   string_descriptor_lang 0 0x0409 ; Language code 0x0409 (English, US)
 
-  string_descriptor_a 1,^"sigrok"
-  string_descriptor_a 2,^"fx2lafw"
-  string_descriptor_a 3,^"sigrok FX2 8ch"
+  string_descriptor_a 1,^"wwoo0003"
+  string_descriptor_a 2,^"fx2sdr"
+  string_descriptor_a 3,^"4-Ch Narrowband SDR"
 
 _dev_strings_end:
   .dw 0x0000   ; just in case someone passes an index higher than the end to the firmware
