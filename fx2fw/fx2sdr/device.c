@@ -38,6 +38,8 @@
 
 BYTE vendor_command;
 
+volatile WORD ledcounter = 1000;
+
 /*
 * These handlers fill out the pre-defs which fx2lib/includes/setupdat.c is looking for:
 *
@@ -154,6 +156,8 @@ static void setup_endpoints(void)
 * this comes from fx2lafw_init in the Sigrok fx2lafw project
 */
 void main_init() {
+  EA = 0; /* global interrupt disable */
+
 	/* Set DYN_OUT and ENH_PKT bits, as recommended by the TRM. */
 	REVCTL = bmNOAUTOARM | bmSKIPCOMMIT;
 
@@ -172,14 +176,28 @@ void main_init() {
 	ENABLE_HISPEED();
 	ENABLE_USBRESET();
 
-//  LED_INIT();
-//  LED_ON();
-//  
-//  /* Init timer2. */
-//  RCAP2L = -500 & 0xff;
-//  RCAP2H = (-500 & 0xff00) >> 8;
-//  T2CON = 0;
-//  ET2 = 1;
+  LED_INIT();
+  LED_ON();
+  
+  /* Init timer2. */
+  // Timer counts up. Interrupt generated after incrementing from TL = 0xFFFF.
+  // TL is auto-reloaded with value of RCAP at this point.
+  RCAP2L = -500 & 0xff;
+  RCAP2H = (-500 & 0xff00) >> 8;
+  // Config of T2CON is found on Table 14-5 of TRM
+  // TF2 = 0,     clears overflow flag (TF2 triggers interrupt)
+  // EXF2 = 0,    clears external trigger (T2EX pin) of Timer 2 interrupt
+  // RCLK = 0,    don't use Timer 2 for USART RX
+  // TCLK = 0,    don't use Timer 2 for USART TX
+  // EXEN2 = 0,   ignore events on T2EX pin
+  // TR2 = 0,     stops timer running
+  // C/T2 = 0,    {CLKOUT/4, CLKOUT/12} depending on the state of T2M (CKCON.5) or override with CLKOUT/2 if in mode 3
+  // CP/RL2 = 0,  auto-reload upon overflow
+  // 
+  // 16-bit timer with auto-reload
+  T2CON = 0;
+  ENABLE_TIMER2(); // enable timer2 interrupt
+  // start timer 2 running
 //  TR2 = 1;
 
 	/* Global (8051) interrupt enable. */
@@ -198,3 +216,21 @@ void main_loop() {
 }
 
 
+/**************************************************
+* ISRs
+***************************************************/
+void timer2_isr(void) __interrupt TF2_ISR
+{
+	/* Blink LED during acquisition, keep it on otherwise. */
+	//if (gpif_acquiring == RUNNING) {
+		if (--ledcounter == 0) {
+			LED_TOGGLE();
+			ledcounter = 1000;
+		}
+	//} else if (gpif_acquiring == STOPPED) {
+	//	LED_ON();
+	//}
+
+  // clear TF2 and EXF2 interrupt flags
+	CLEAR_TIMER2();
+}
