@@ -198,7 +198,7 @@ void main_init() {
   T2CON = 0;
   ENABLE_TIMER2(); // enable timer2 interrupt
   // start timer 2 running
-//  TR2 = 1;
+  TR2 = 1;
 
 	/* Global (8051) interrupt enable. */
 	EA = 1;
@@ -216,9 +216,6 @@ void main_loop() {
 }
 
 
-/**************************************************
-* ISRs
-***************************************************/
 void timer2_isr(void) __interrupt TF2_ISR
 {
 	/* Blink LED during acquisition, keep it on otherwise. */

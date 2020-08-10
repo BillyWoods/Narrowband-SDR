@@ -109,3 +109,11 @@ void suspend_isr() __interrupt SUSPEND_ISR {
  dosuspend=TRUE;
  CLEAR_SUSPEND();
 }
+
+// predef; definition is in device.c
+//
+// Per SDCC manual: a prototype of the isr MUST be present or included
+// in the file that contains the function main.
+//
+// Otherwise this interrupt won't be included in the interrupt vector table
+void timer2_isr(void) __interrupt TF2_ISR; 
