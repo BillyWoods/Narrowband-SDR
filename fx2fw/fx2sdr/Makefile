@@ -17,10 +17,13 @@
 
 
 # change location of fx2libdir if needed
-SOURCES=fw.c device.c
+SOURCES=fw.c device.c gpif_dat.c
 A51_SOURCES=dscr.a51
 BASENAME=firmware
 
 
 include ../fx2lib/lib/fx2.mk
+
+gpif_dat.c: gpif_waveforms.c
+	$(FX2LIBDIR)/utils/gpif2dat $< $@
 

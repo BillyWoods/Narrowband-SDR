@@ -33,6 +33,7 @@
 #endif
 
 #include "fw.h"
+#include "gpif_dat.h"
 
 
 
@@ -207,7 +208,7 @@ void main_init() {
 	setup_endpoints();
 
 	/* Put the FX2 into GPIF master mode and setup the GPIF. */
-	//gpif_init_la();
+  gpif_init(WaveData, InitData); // this data comes from gpif_dat.c
 }
 
 
