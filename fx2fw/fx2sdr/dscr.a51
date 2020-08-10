@@ -23,8 +23,13 @@
 
 ;; these VID/PID ARE FOR INTERNAL TESTING ONLY
 ;; http://pid.codes/1209/0001/
-VID = 0x0912    ; Manufacturer ID (0x1209)
-PID = 0x0100    ; Product ID (0x0001)
+;;VID = 0x0912    ; Manufacturer ID (0x1209)
+;;PID = 0x0100    ; Product ID (0x0001)
+
+; use the fx2lp dev kit VID/PID, saves rebooting
+VID = 0xb404    ; Manufacturer ID (0x04b4)
+PID = 0x1386    ; Product ID (0x8613)
+
 
 
 ;; from include/common.inc in Sigrok fx2lafw project
