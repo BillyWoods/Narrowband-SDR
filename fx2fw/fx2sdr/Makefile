@@ -17,13 +17,6 @@
 
 
 # change location of fx2libdir if needed
-
-DSCR_AREA?=-Wl"-b DSCR_AREA=0x1e00"
-INT2JT?=-Wl"-b INT2JT=0x1f00"
-CODE_SIZE?=--code-size 0x1c00
-XRAM_SIZE?=--xram-size 0x0200
-XRAM_LOC?=--xram-loc 0x1c00
-
 SOURCES=fw.c device.c
 A51_SOURCES=dscr.a51
 BASENAME=firmware
