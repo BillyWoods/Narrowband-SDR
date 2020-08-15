@@ -232,3 +232,38 @@ void timer2_isr(void) __interrupt TF2_ISR
   // clear TF2 and EXF2 interrupt flags
 	CLEAR_TIMER2();
 }
+
+/* IN BULK NAK - the host started requesting data. */
+void ibn_isr(void) __interrupt IBN_ISR
+{
+	/*
+	 * If the IBN interrupt is not disabled, clearing
+	 * does not work. See AN78446, 6.2.
+	 */
+	BYTE ibnsave = IBNIE;
+	IBNIE = 0;
+	CLEAR_USBINT();
+
+	/*
+	 * If the host sent the START command, start the GPIF
+	 * engine. The host will repeat the BULK IN in the next
+	 * microframe.
+	 */
+	if ((IBNIRQ & bmEP2IBN)) { // && (gpif_acquiring == PREPARED)) {
+		//ledcounter = 1;
+		//LED_OFF();
+		//gpif_acquisition_start();
+
+    RCAP2L = -1500 & 0xff;
+    RCAP2H = (-1500 & 0xff00) >> 8;
+	}
+
+	/* Clear IBN flags for all EPs. */
+  IBNIRQ = 0xff;
+
+	NAKIRQ = bmIBN;
+	SYNCDELAY;
+
+	IBNIE = ibnsave;
+	SYNCDELAY;
+}
