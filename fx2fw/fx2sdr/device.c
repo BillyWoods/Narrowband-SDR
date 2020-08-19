@@ -208,7 +208,12 @@ void main_init() {
 	setup_endpoints();
 
 	/* Put the FX2 into GPIF master mode and setup the GPIF. */
+  // set the GPIF data pins to inputs/outputs appropriately
   gpif_init(WaveData, InitData); // this data comes from gpif_dat.c
+  // gpif_init hardcodes IFCONFIG, but we want something different
+  SYNCDELAY;
+  IFCONFIG = 0xEE;
+  SYNCDELAY;
 }
 
 
@@ -253,9 +258,13 @@ void ibn_isr(void) __interrupt IBN_ISR
 		//ledcounter = 1;
 		//LED_OFF();
 		//gpif_acquisition_start();
+    if ( GPIFTRIG & 0x80 ) { // GPIF is ready
+      // make the LEDs blink very slowly
+      RCAP2L = -3000 & 0xff;
+      RCAP2H = (-3000 & 0xff00) >> 8;
 
-    RCAP2L = -1500 & 0xff;
-    RCAP2H = (-1500 & 0xff00) >> 8;
+      gpif_fifo_read(2); // start reading into EP 2
+    } 
 	}
 
 	/* Clear IBN flags for all EPs. */
