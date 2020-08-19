@@ -151,6 +151,32 @@ static void setup_endpoints(void)
 	SYNCDELAY;
 }
 
+/**********************************************************
+* GPIF pre-acquisition preparation
+* (additional setup that has to run after gpif_init)
+**********************************************************
+* derived from gpif-acquisition.c in the Sigrok project
+*/
+void gpif_acquisition_prepare() {
+  /* Ensure GPIF is idle before reconfiguration. */
+  while (!(GPIFTRIG & 0x80));
+
+  /* Configure the EP2 FIFO. */
+  EP2FIFOCFG = bmAUTOIN;
+  SYNCDELAY;
+
+  /* Set IFCONFIG to the correct clock source. */
+  IFCONFIG = 0xEE;
+  SYNCDELAY;
+
+  /* Update the status. */
+  //gpif_acquiring = PREPARED;
+
+  // stops the GPIF Flag terminating GPIF transfers (there should be enough logic in our waveform to handle this??)
+	//EP2GPIFPFSTOP = (0 << 0);
+  //SYNCDELAY;
+}
+
 
 //********************  INIT ***********************
 /*
@@ -210,10 +236,7 @@ void main_init() {
 	/* Put the FX2 into GPIF master mode and setup the GPIF. */
   // set the GPIF data pins to inputs/outputs appropriately
   gpif_init(WaveData, InitData); // this data comes from gpif_dat.c
-  // gpif_init hardcodes IFCONFIG, but we want something different
-  SYNCDELAY;
-  IFCONFIG = 0xEE;
-  SYNCDELAY;
+  gpif_acquisition_prepare();
 }
 
 
@@ -263,6 +286,8 @@ void ibn_isr(void) __interrupt IBN_ISR
       RCAP2L = -3000 & 0xff;
       RCAP2H = (-3000 & 0xff00) >> 8;
 
+      /* Execute the whole GPIF waveform once. */
+      gpif_set_tc16(4);
       gpif_fifo_read(2); // start reading into EP 2
     } 
 	}
