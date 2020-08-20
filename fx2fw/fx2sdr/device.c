@@ -73,10 +73,26 @@ BOOL handle_get_interface(BYTE ifc, BYTE* alt_ifc) {
 // NOTE this function should reconfigure and reset the endpoints
 // according to the interface descriptors you provided.
 BOOL handle_set_interface(BYTE ifc,BYTE alt_ifc) {  
- printf ( "Set Interface.\n" );
- //interface=ifc;
- //alt=alt_ifc;
- return TRUE;
+	/* We only support interface 0, alternate interface 0. */
+	if (ifc != 0 || alt_ifc != 0)
+		return FALSE;
+
+	/* Perform procedure from TRM, section 2.3.7: */
+
+	/* (1) TODO. */
+
+	/* (2) Reset data toggles of the EPs in the interface. */
+	/* Note: RESETTOGGLE() gets the EP number WITH bit 7 set/cleared. */
+	RESETTOGGLE(0x82);
+
+	/* (3) Restore EPs to their default conditions. */
+	/* Note: RESETFIFO() gets the EP number WITHOUT bit 7 set/cleared. */
+	RESETFIFO(0x02);
+	/* TODO */
+
+	/* (4) Clear the HSNAK bit. Not needed, fx2lib does this. */
+
+	return TRUE;
 }
 
 // handle getting and setting the configuration
@@ -140,10 +156,10 @@ static void setup_endpoints(void)
 	EP2FIFOCFG = bmAUTOIN;
 	SYNCDELAY;
 
-	/* EP2: Auto-commit 512 (0x200) byte packets (due to AUTOIN = 1). */
-	EP2AUTOINLENH = 0x02;
+	/* EP2: Auto-commit 12*42 = 504 (0x01F8) byte packets (due to AUTOIN = 1). */
+	EP2AUTOINLENH = 0; //0x01;
 	SYNCDELAY;
-	EP2AUTOINLENL = 0x00;
+	EP2AUTOINLENL = 1;//0xF8;
 	SYNCDELAY;
 
 	/* EP2: Set the GPIF flag to 'full'. */
