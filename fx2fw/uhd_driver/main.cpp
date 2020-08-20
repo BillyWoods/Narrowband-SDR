@@ -23,6 +23,8 @@
 
 const uint16_t VID = 0x04b4;
 const uint16_t PID = 0x8613;
+//const uint16_t VID = 0x0925;
+//const uint16_t PID = 0x3881;
 const unsigned char EP2_IN_ADDR = LIBUSB_ENDPOINT_IN | 0x02;
 
 int main(int argc, char* argv[]) {
@@ -61,12 +63,17 @@ int main(int argc, char* argv[]) {
     return -1;
   }
 
-  unsigned char buf2[100];
+  unsigned char buf2[512];
   int nTransferred = 0;
+  int i = 0;
   // TODO: this is blocking; need to look into the async version
-  rv = libusb_bulk_transfer(hndl, EP2_IN_ADDR, buf2, sizeof(buf2), &nTransferred, 1000); 
-  if(rv) {
-    printf ( "IN Transfer failed: %d\n", rv );
+  rv = 1;
+  while (rv && i < 10) {
+    rv = libusb_bulk_transfer(hndl, EP2_IN_ADDR, buf2, sizeof(buf2), &nTransferred, 10); 
+    i++;
+  }
+  if (rv) {
+    printf ( "IN Transfer failed: %d, transferred: %d\n", rv, nTransferred );
     return rv;
   }
 
