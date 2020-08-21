@@ -303,8 +303,8 @@ void ibn_isr(void) __interrupt IBN_ISR
       RCAP2H = (-3000 & 0xff00) >> 8;
 
       /* Execute the whole GPIF waveform once. */
-      gpif_set_tc16(4);
-      gpif_fifo_read(2); // start reading into EP 2
+      gpif_set_tc16(1);
+      gpif_fifo_read(0); // start reading into EP 2 (index 0)
     } 
 	}
 
