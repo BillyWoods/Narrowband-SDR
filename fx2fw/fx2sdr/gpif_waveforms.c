@@ -25,7 +25,7 @@
 // CTL 1    = REN#     CMOS        
 // CTL 2    = OE#      CMOS        
 // CTL 3    = CTL3     CMOS        
-// CTL 4    = CTL4     CMOS        
+// CTL 4    = CTL4     Op Drain    
 // CTL 5    = CTL5     CMOS        
                                
 // GPIF Rdy Inputs         
@@ -103,11 +103,11 @@
 // DataMode NO Data   Activate  Activate  NO Data   NO Data   NO Data   NO Data            
 // NextData SameData  SameData  SameData  SameData  SameData  SameData  SameData           
 // Int Trig No Int    No Int    No Int    No Int    No Int    No Int    No Int             
-// IF/Wait  Wait 2    Wait 11   Wait 1    Wait 2    IF        Wait 1    Wait 1             
-//   Term A                                         TCXpire                                
-//   LFunc                                          OR                                     
+// IF/Wait  Wait 2    Wait 11   Wait 1    Wait 1    IF        Wait 1    Wait 1             
+//   Term A                                         FIFOFlag                               
+//   LFunc                                          AND                                    
 //   Term B                                         FIFOFlag                               
-// Branch1                                          ThenIdle                               
+// Branch1                                          Then 0                                 
 // Branch0                                          Else 0                                 
 // Re-Exec                                          Yes                                    
 // Sngl/CRC Default   Default   Default   Default   Default   Default   Default            
@@ -169,10 +169,10 @@ const char xdata WaveData[128] =
 /* Output*/ 0x01,     0x01,     0x01,     0x01,     0x01,     0x01,     0x01,     0x01,
 /* LFun  */ 0x00,     0x00,     0x00,     0x00,     0x00,     0x00,     0x00,     0x3F,
 // Wave 2 
-/* LenBr */ 0x02,     0x0B,     0x01,     0x02,     0xB8,     0x01,     0x01,     0x07,
+/* LenBr */ 0x02,     0x0B,     0x01,     0x01,     0x80,     0x01,     0x01,     0x07,
 /* Opcode*/ 0x00,     0x02,     0x02,     0x00,     0x01,     0x00,     0x00,     0x00,
 /* Output*/ 0x00,     0x00,     0x01,     0x01,     0x01,     0x01,     0x01,     0x01,
-/* LFun  */ 0x00,     0x00,     0x00,     0x00,     0x6E,     0x00,     0x00,     0x3F,
+/* LFun  */ 0x00,     0x00,     0x00,     0x00,     0x36,     0x00,     0x00,     0x3F,
 // Wave 3 
 /* LenBr */ 0x01,     0x01,     0x01,     0x01,     0x01,     0x01,     0x01,     0x07,
 /* Opcode*/ 0x00,     0x00,     0x00,     0x00,     0x00,     0x00,     0x00,     0x00,
@@ -194,7 +194,7 @@ const char xdata FlowStates[36] =
 // DO NOT EDIT ...                                               
 const char xdata InitData[7] =                                   
 {                                                                
-/* Regs  */ 0xE0,0x00,0x00,0x01,0xEE,0x4E,0x00     
+/* Regs  */ 0xE0,0x10,0x00,0x01,0xEE,0x4E,0x00     
 };                                                               
 // END DO NOT EDIT                                               
                                                                  
