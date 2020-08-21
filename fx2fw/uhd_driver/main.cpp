@@ -63,7 +63,7 @@ int main(int argc, char* argv[]) {
     return -1;
   }
 
-  unsigned char buf2[512];
+  unsigned char buf2[504];
   int nTransferred = 0;
   int i = 0;
   // TODO: this is blocking; need to look into the async version
@@ -78,7 +78,7 @@ int main(int argc, char* argv[]) {
   }
 
   // See what we read in
-  for (int i=0;i<1;++i) {
+  for (int i=0;i<nTransferred;++i) {
     printf ( "%d ", buf2[i] );
   }
   printf("\n");

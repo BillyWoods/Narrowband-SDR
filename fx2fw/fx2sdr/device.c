@@ -157,9 +157,9 @@ static void setup_endpoints(void)
 	SYNCDELAY;
 
 	/* EP2: Auto-commit 12*42 = 504 (0x01F8) byte packets (due to AUTOIN = 1). */
-	EP2AUTOINLENH = 0; //0x01;
+	EP2AUTOINLENH = 0x01;
 	SYNCDELAY;
-	EP2AUTOINLENL = 1;//0xF8;
+	EP2AUTOINLENL = 0xF8;
 	SYNCDELAY;
 
 	/* EP2: Set the GPIF flag to 'full'. */
