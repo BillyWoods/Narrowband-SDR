@@ -25,6 +25,7 @@ int16_t channels[8];
 // predefs
 void basic_transpose(uint8_t in[16], uint16_t out[8]);
 void fast_transpose(uint8_t in[16], uint16_t out[8]);
+void _fast_transpose(uint16_t out[8]);
 void debug_print(uint8_t dat[16], int row_width, int print_bits);
 
 #ifndef DEBUG_PRINT
@@ -88,6 +89,10 @@ inline void basic_transpose(uint8_t in[16], uint16_t out[8]) {
 inline void fast_transpose(uint8_t in[16], uint16_t out[8]) {
   // we'll work in-place on the output variable
   memcpy(out, in, 16);
+  _fast_transpose(out);
+}
+
+inline void _fast_transpose(uint16_t out[8]) {
   // use as much 64-bit math as possible
   uint64_t* out_64 = (uint64_t*) out;
   uint64_t t, t1;
