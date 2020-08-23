@@ -118,3 +118,4 @@ void suspend_isr() __interrupt SUSPEND_ISR {
 // Otherwise this interrupt won't be included in the interrupt vector table
 void timer2_isr(void) __interrupt TF2_ISR; 
 void ibn_isr(void) __interrupt IBN_ISR;
+void gpifwf_isr(void) __interrupt GPIFWF_ISR;

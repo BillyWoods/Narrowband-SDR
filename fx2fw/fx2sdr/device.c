@@ -253,6 +253,7 @@ void main_init() {
   // set the GPIF data pins to inputs/outputs appropriately
   gpif_init(WaveData, InitData); // this data comes from gpif_dat.c
   gpif_acquisition_prepare();
+  ENABLE_GPIFWF(); // the WF triggers an interrupt to let us know we can acquire more data
 }
 
 
@@ -303,7 +304,7 @@ void ibn_isr(void) __interrupt IBN_ISR
       RCAP2H = (-3000 & 0xff00) >> 8;
 
       /* gpif waveform does not return to idle state, so will keep going, even if we req. 1 read*/
-      gpif_set_tc16(1);
+      gpif_set_tc16(12);
       gpif_fifo_read(0); // start reading into EP 2 (index 0)
     } 
 	}
@@ -316,4 +317,13 @@ void ibn_isr(void) __interrupt IBN_ISR
 
 	IBNIE = ibnsave;
 	SYNCDELAY;
+}
+
+void gpifwf_isr(void) __interrupt GPIFWF_ISR {
+  GPIFTCB0 = 12; // do another 12 transactions
+//TODO: get this fast
+  SYNCDELAY;
+
+  //CLEAR_GPIFWF(); macro isn't being preproc'd properly, but it just does the below
+  EXIF &= ~0x40; GPIFIRQ = 0x02;
 }
