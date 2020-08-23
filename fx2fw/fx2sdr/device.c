@@ -222,7 +222,7 @@ void main_init() {
 	ENABLE_USBRESET();
 
   LED_INIT();
-  LED_ON();
+  LED1_ON();
   
   /* Init timer2. */
   // Timer counts up. Interrupt generated after incrementing from TL = 0xFFFF.
@@ -269,11 +269,11 @@ void timer2_isr(void) __interrupt TF2_ISR
 	/* Blink LED during acquisition, keep it on otherwise. */
 	//if (gpif_acquiring == RUNNING) {
 		if (--ledcounter == 0) {
-			LED_TOGGLE();
+			LED1_TOGGLE();
 			ledcounter = 1000;
 		}
 	//} else if (gpif_acquiring == STOPPED) {
-	//	LED_ON();
+	//	LED1_ON();
 	//}
 
   // clear TF2 and EXF2 interrupt flags
@@ -298,7 +298,7 @@ void ibn_isr(void) __interrupt IBN_ISR
 	 */
 	if ((IBNIRQ & bmEP2IBN)) { // && (gpif_acquiring == PREPARED)) {
 		//ledcounter = 1;
-		//LED_OFF();
+		//LED1_OFF();
 		//gpif_acquisition_start();
     if ( GPIFTRIG & 0x80 ) { // GPIF is ready
       // make the LEDs blink very slowly
@@ -325,6 +325,8 @@ void gpifwf_isr(void) __interrupt GPIFWF_ISR {
 //  GPIFTCB0 = 12; // do another 12 transactions
 //TODO: get this fast
 //  SYNCDELAY;
+  LED2_OFF();
+  //LED2_TOGGLE();
 
   //CLEAR_GPIFWF(); macro isn't being preproc'd properly, but it just does the below
   EXIF &= ~0x40; GPIFIRQ = 0x02;

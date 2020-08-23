@@ -41,9 +41,14 @@
 
 #define LED_POLARITY		0 /* 1: active-high, 0: active-low */
 
-#define LED_INIT()		do { PORTACFG = 0; OEA = (1 << 0); } while (0)
-#define LED_ON()		do { PA0 = LED_POLARITY; } while (0)
-#define LED_OFF()		do { PA0 = !LED_POLARITY; } while (0)
-#define LED_TOGGLE()		do { PA0 = !PA0; } while (0)
+#define LED_INIT()		do { PORTACFG = 0; OEA = (1 << 1 | 1 << 0); } while (0)
+
+#define LED1_ON()		do { PA0 = LED_POLARITY; } while (0)
+#define LED1_OFF()		do { PA0 = !LED_POLARITY; } while (0)
+#define LED1_TOGGLE()		do { PA0 = !PA0; } while (0)
+
+#define LED2_ON()		do { PA1 = LED_POLARITY; } while (0)
+#define LED2_OFF()		do { PA1 = !LED_POLARITY; } while (0)
+#define LED2_TOGGLE()		do { PA0 = !PA1; } while (0)
 
 #endif
