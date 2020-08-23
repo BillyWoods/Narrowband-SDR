@@ -102,8 +102,8 @@
 // AddrMode Same Val  Same Val  Same Val  Same Val  Same Val  Same Val  Same Val           
 // DataMode NO Data   Activate  NO Data   NO Data   NO Data   NO Data   NO Data            
 // NextData SameData  SameData  SameData  SameData  SameData  SameData  SameData           
-// Int Trig No Int    No Int    Trig Int  No Int    No Int    No Int    No Int             
-// IF/Wait  Wait 2    IF        Wait 1    Wait 1    Wait 1    Wait 1    Wait 1             
+// Int Trig No Int    No Int    No Int    No Int    No Int    No Int    No Int             
+// IF/Wait  Wait 2    IF        Wait 2    Wait 1    Wait 1    Wait 1    Wait 1             
 //   Term A           TCXpire                                                              
 //   LFunc            AND                                                                  
 //   Term B           TCXpire                                                              
@@ -169,8 +169,8 @@ const char xdata WaveData[128] =
 /* Output*/ 0x01,     0x01,     0x01,     0x01,     0x01,     0x01,     0x01,     0x01,
 /* LFun  */ 0x00,     0x00,     0x00,     0x00,     0x00,     0x00,     0x00,     0x3F,
 // Wave 2 
-/* LenBr */ 0x02,     0x91,     0x01,     0x01,     0x01,     0x01,     0x01,     0x07,
-/* Opcode*/ 0x00,     0x03,     0x10,     0x00,     0x00,     0x00,     0x00,     0x00,
+/* LenBr */ 0x02,     0x91,     0x02,     0x01,     0x01,     0x01,     0x01,     0x07,
+/* Opcode*/ 0x00,     0x03,     0x00,     0x00,     0x00,     0x00,     0x00,     0x00,
 /* Output*/ 0x00,     0x00,     0x01,     0x01,     0x01,     0x01,     0x01,     0x01,
 /* LFun  */ 0x00,     0x2D,     0x00,     0x00,     0x00,     0x00,     0x00,     0x3F,
 // Wave 3 
@@ -194,7 +194,7 @@ const char xdata FlowStates[36] =
 // DO NOT EDIT ...                                               
 const char xdata InitData[7] =                                   
 {                                                                
-/* Regs  */ 0xE0,0x10,0x00,0x01,0xEE,0x4E,0x00     
+/* Regs  */ 0xE0,0x10,0x00,0x01,0xFE,0x4E,0x00     
 };                                                               
 // END DO NOT EDIT                                               
                                                                  
@@ -224,7 +224,7 @@ void GpifInit( void )
   // 8051 doesn't have access to waveform memories 'til
   // the part is in GPIF mode.
  
-  IFCONFIG = 0xEE;
+  IFCONFIG = 0xFE;
   // IFCLKSRC=1   , FIFOs executes on internal clk source
   // xMHz=1       , 48MHz internal clk rate
   // IFCLKOE=0    , Don't drive IFCLK pin signal at 48MHz

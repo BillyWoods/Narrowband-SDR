@@ -182,7 +182,9 @@ void gpif_acquisition_prepare() {
   SYNCDELAY;
 
   /* Set IFCONFIG to the correct clock source. */
-  IFCONFIG = 0xEE;
+  IFCONFIG = 0xFE; // 0xFE for inverted, 0xFF for non-inverted
+  // DEBUG: choose 30 MHz clock, inverted
+  //IFCONFIG = 0xBE;
   SYNCDELAY;
 
   /* Update the status. */
@@ -320,9 +322,9 @@ void ibn_isr(void) __interrupt IBN_ISR
 }
 
 void gpifwf_isr(void) __interrupt GPIFWF_ISR {
-  GPIFTCB0 = 12; // do another 12 transactions
+//  GPIFTCB0 = 12; // do another 12 transactions
 //TODO: get this fast
-  SYNCDELAY;
+//  SYNCDELAY;
 
   //CLEAR_GPIFWF(); macro isn't being preproc'd properly, but it just does the below
   EXIF &= ~0x40; GPIFIRQ = 0x02;
