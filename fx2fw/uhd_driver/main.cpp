@@ -21,10 +21,11 @@
 #include <cassert>
 #include <libusb-1.0/libusb.h>
 
+#include "transpose.h"
+
 const uint16_t VID = 0x04b4;
 const uint16_t PID = 0x8613;
-//const uint16_t VID = 0x0925;
-//const uint16_t PID = 0x3881;
+
 const unsigned char EP2_IN_ADDR = LIBUSB_ENDPOINT_IN | 0x02;
 
 int main(int argc, char* argv[]) {
@@ -65,23 +66,34 @@ int main(int argc, char* argv[]) {
 
   unsigned char buf2[504];
   int nTransferred = 0;
-  int i = 0;
   // TODO: this is blocking; need to look into the async version
-  rv = 1;
-  while (rv && i < 10) {
-    rv = libusb_bulk_transfer(hndl, EP2_IN_ADDR, buf2, sizeof(buf2), &nTransferred, 10); 
-    i++;
-  }
+  rv = libusb_bulk_transfer(hndl, EP2_IN_ADDR, buf2, sizeof(buf2), &nTransferred, 500); 
   if (rv) {
     printf ( "IN Transfer failed: %d, transferred: %d\n", rv, nTransferred );
     return rv;
   }
 
   // See what we read in
+  printf("Read in %d bytes\n", nTransferred);
+/*
+  // the raw hex we got
   for (int i=0;i<nTransferred;++i) {
-    printf ( "%d ", buf2[i] );
+    if (i % 12 == 0) printf("\n");
+    printf ( "%02x ", buf2[i] );
   }
+*/
   printf("\n");
+  // transposed so we can see what each channel saw
+  printf("n\tCH0\tCH1\tCH2\tCH3\tCH4\tCH5\tCH6\tCH7\n");
+  for (int i = 0; i < 504/12; i++) {
+    uint16_t channels[8];
+    transpose_ADC_reading(buf2 + i*12, channels, false);
+    printf("%d:\t", i);
+    for (int j = 0; j < 8; j++)
+      printf("%04x\t", channels[j]);
+    printf("\n"); 
+  }
+
 
   return 0;
 }
