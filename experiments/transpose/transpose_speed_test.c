@@ -87,7 +87,7 @@ inline void basic_transpose(uint8_t in[16], uint16_t out[8]) {
 
 inline void fast_transpose(uint8_t in[16], uint16_t out[8]) {
   // we'll work in-place on the output variable
-  memcpy(out, in, 16*8);
+  memcpy(out, in, 16);
   // use as much 64-bit math as possible
   uint64_t* out_64 = (uint64_t*) out;
   uint64_t t, t1;
