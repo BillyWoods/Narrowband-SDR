@@ -254,6 +254,7 @@ void main_init() {
 	/* Put the FX2 into GPIF master mode and setup the GPIF. */
   // set the GPIF data pins to inputs/outputs appropriately
   gpif_init(WaveData, InitData); // this data comes from gpif_dat.c
+  gpif_setflowstate(FlowStates, 2); // our waveform is in bank 2
   gpif_acquisition_prepare();
   ENABLE_GPIFWF(); // the WF triggers an interrupt to let us know we can acquire more data
 }
