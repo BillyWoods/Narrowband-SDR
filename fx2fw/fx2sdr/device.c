@@ -182,7 +182,7 @@ void gpif_acquisition_prepare() {
   SYNCDELAY;
 
   /* Set IFCONFIG to the correct clock source. */
-  IFCONFIG = 0xFE; // 0xFE for inverted, 0xFF for non-inverted
+  IFCONFIG = 0xEE; // 0xFE for inverted, 0xEE for non-inverted
   // DEBUG: choose 30 MHz clock, inverted
   //IFCONFIG = 0xBE;
   SYNCDELAY;
@@ -307,7 +307,7 @@ void ibn_isr(void) __interrupt IBN_ISR
       RCAP2H = (-3000 & 0xff00) >> 8;
 
       /* gpif waveform does not return to idle state, so will keep going, even if we req. 1 read*/
-      gpif_set_tc16(12);
+      gpif_set_tc16(504);
       gpif_fifo_read(0); // start reading into EP 2 (index 0)
     } 
 	}
