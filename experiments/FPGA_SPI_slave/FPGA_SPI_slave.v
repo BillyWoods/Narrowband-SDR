@@ -5,9 +5,10 @@
  * It also provides a divided clock output for help with debugging;
  * it can be physically jumpered in as the clock signals.
  */
-module FPGA_SPI_slave(nCS, SCLK, DOUT,
+module FPGA_SPI_slave(nRST, nCS, SCLK, DOUT,
 							 sys_clk, dbg_nCS, dbg_SCLK);
 	input nCS;				// shared by all ADCs
+	input nRST;				// shared by all ADCs
 	input SCLK;				// shared by all ADCs
 	output [7:0] DOUT; 	// one bit for each ADC's DOUT pin
 	input sys_clk; 		// the system's 50 MHz clock
@@ -24,11 +25,11 @@ module FPGA_SPI_slave(nCS, SCLK, DOUT,
 	generate
 		for (i = 0; i < 8; i = i + 1) begin : simulated_ADCs
 			if (internal_loopback == 1) begin
-				SPI_slave simulated_ADC(.nCS(dbg_nCS), .SCLK(dbg_SCLK), .DOUT(DOUT[i]));
+				SPI_slave simulated_ADC(.nRST(nRST), .nCS(dbg_nCS), .SCLK(dbg_SCLK), .DOUT(DOUT[i]));
 				defparam simulated_ADC.increment = i + 1;
 			end
 			else begin
-				SPI_slave simulated_ADC(.nCS(nCS), .SCLK(SCLK), .DOUT(DOUT[i]));
+				SPI_slave simulated_ADC(.nRST(nRST), .nCS(nCS), .SCLK(SCLK), .DOUT(DOUT[i]));
 				defparam simulated_ADC.increment = i + 1;
 			end
 		end
@@ -75,6 +76,7 @@ endmodule
 
 
 module tb_FPGA_SPI_slave;
+	reg nRST = 1;
 	// we'll use the internal loopback to supply nCS, SCLK
 	wire nCS = 1'b1;
 	wire SCLK = 1'b1;
@@ -83,7 +85,7 @@ module tb_FPGA_SPI_slave;
 	wire dbg_nCS;
 	wire dbg_SCLK;
 	
-	FPGA_SPI_slave test_module(nCS, SCLK, DOUT,
+	FPGA_SPI_slave test_module(nRST, nCS, SCLK, DOUT,
 										sys_clk, dbg_nCS, dbg_SCLK);
 	defparam test_module.internal_loopback = 1;
 	

@@ -32,13 +32,15 @@ From the MAX19777 datasheet:
 	10th SCLK falling edge (see the Operating Modes section)."
 */
 
-module SPI_slave(nCS, SCLK, DOUT);
+module SPI_slave(nRST, nCS, SCLK, DOUT);
+	input nRST;
 	input nCS;
 	input SCLK;
 	output DOUT;
 	
 	reg [3:0] 	channel_addr = 0;
 	reg [11:0] 	sample = 0;
+	reg [11:0]	sample_next;
 	wire [15:0]	word_out = {1'b0, sample, 1'b0, 1'b0, 1'bz};
 	reg [3:0]	bit_ptr = 0; // an index in word_out
 	reg [3:0]	bit_ptr_next;
@@ -46,16 +48,23 @@ module SPI_slave(nCS, SCLK, DOUT);
 	parameter increment = 1;
 	
 	/*
-	"A high-to-low transition on CS samples
+	From the ADC datasheet: "A high-to-low transition on CS samples
 	 the analog inputs and initiates a new frame."
 	 */
 	always @(negedge nCS) begin
+		sample <= sample_next;
+	end
+	
+	/*
+	combinational logic for determining the next value of sample
+	*/
+	always @(*) begin
 		// We'll increment our 12-bit counter to simulate a new sample being taken.
-		if (sample < 12'b111111111111 - increment) begin
-			sample <= sample + increment;
+		if ((sample < 12'b111111111111 - increment) && nRST) begin
+			sample_next = sample + increment;
 		end
 		else begin
-			sample <= 0;
+			sample_next = 0;
 		end
 	end
 		
@@ -89,13 +98,16 @@ endmodule
 // this testbench is meant to simulate Figure 5 from the datasheet for the MAX11131
 module tb_SPI_slave;
 	reg nCS;
+	reg nRST;
 	reg SCLK;
 	wire DOUT;
 	integer i;
+	integer j = 0;
 	parameter T = 20; // clock period
 	
 	initial begin
 		nCS = 1;
+		nRST = 1;
 		SCLK = 1;
 		
 		// leave both high for a bit
@@ -104,6 +116,8 @@ module tb_SPI_slave;
 		#(T/4);
 		
 		forever begin
+			nRST = ~(j%10 == 5); // reset once every 10 cycles, on the 6th run.
+		
 			// Starting i at 1 so numbering of posedges matches Figure 2b
 			for (i = 1; i <= 16; i = i + 1) begin
 				if (i == 14) begin
@@ -129,8 +143,10 @@ module tb_SPI_slave;
 					#(T/2);
 				end
 			end
+			
+			j = j + 1;
 		end
 	end
 	
-	SPI_slave test_module(nCS, SCLK, DOUT);
+	SPI_slave test_module(nRST, nCS, SCLK, DOUT);
 endmodule 
