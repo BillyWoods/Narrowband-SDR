@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP LMV712-N
+D Dual Operational Amplifiers, MSOP-10
+K dual opamp
+F https://www.ti.com/lit/ds/symlink/lmv712-n.pdf
+$ENDCMP
+#
+#End Doc Library
