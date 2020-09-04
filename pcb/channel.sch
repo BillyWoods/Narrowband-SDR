@@ -130,17 +130,6 @@ Wire Wire Line
 	2550 3075 2375 3075
 Connection ~ 2375 3075
 $Comp
-L Device:C_Small C?
-U 1 1 5F486018
-P 1800 3700
-F 0 "C?" V 1571 3700 50  0000 C CNN
-F 1 "100pF" V 1662 3700 50  0000 C CNN
-F 2 "" H 1800 3700 50  0001 C CNN
-F 3 "~" H 1800 3700 50  0001 C CNN
-	1    1800 3700
-	0    1    1    0   
-$EndComp
-$Comp
 L power:GND #PWR?
 U 1 1 5F48628E
 P 1275 3900
@@ -151,23 +140,6 @@ F 3 "" H 1275 3900 50  0001 C CNN
 	1    1275 3900
 	1    0    0    -1  
 $EndComp
-$Comp
-L Device:C_Small C?
-U 1 1 5F48630D
-P 3150 3700
-F 0 "C?" V 2921 3700 50  0000 C CNN
-F 1 "100pF" V 3012 3700 50  0000 C CNN
-F 2 "" H 3150 3700 50  0001 C CNN
-F 3 "~" H 3150 3700 50  0001 C CNN
-	1    3150 3700
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	1475 3700 1700 3700
-Wire Wire Line
-	1900 3700 2175 3700
-Wire Wire Line
-	2775 3700 3050 3700
 Wire Wire Line
 	2375 3075 2375 3400
 $Comp
@@ -893,4 +865,118 @@ Text GLabel 8775 6575 3    50   Input ~ 0
 24MHz_OSC
 Wire Wire Line
 	8775 6350 8775 6575
+Wire Wire Line
+	2175 3700 2000 3700
+$Comp
+L Device:C_Small C?
+U 1 1 5F52BEC8
+P 3200 3500
+F 0 "C?" V 2971 3500 50  0000 C CNN
+F 1 "100pF" V 3062 3500 50  0000 C CNN
+F 2 "" H 3200 3500 50  0001 C CNN
+F 3 "~" H 3200 3500 50  0001 C CNN
+	1    3200 3500
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:C_Small C?
+U 1 1 5F52BECE
+P 3200 3875
+F 0 "C?" V 2971 3875 50  0000 C CNN
+F 1 "100pF" V 3062 3875 50  0000 C CNN
+F 2 "" H 3200 3875 50  0001 C CNN
+F 3 "~" H 3200 3875 50  0001 C CNN
+	1    3200 3875
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	3100 3500 3025 3500
+Wire Wire Line
+	3025 3500 3025 3700
+Wire Wire Line
+	3025 3875 3100 3875
+Connection ~ 3025 3700
+Wire Wire Line
+	3025 3700 3025 3875
+Wire Wire Line
+	3575 3700 3400 3700
+Wire Wire Line
+	3400 3700 3400 3500
+Wire Wire Line
+	3400 3500 3300 3500
+Wire Wire Line
+	3300 3875 3400 3875
+Wire Wire Line
+	3400 3875 3400 3700
+Connection ~ 3400 3700
+Wire Wire Line
+	2775 3700 3025 3700
+$Comp
+L Device:C_Small C?
+U 1 1 5F53636E
+P 1800 3500
+F 0 "C?" V 1571 3500 50  0000 C CNN
+F 1 "100pF" V 1662 3500 50  0000 C CNN
+F 2 "" H 1800 3500 50  0001 C CNN
+F 3 "~" H 1800 3500 50  0001 C CNN
+	1    1800 3500
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:C_Small C?
+U 1 1 5F536374
+P 1800 3875
+F 0 "C?" V 1571 3875 50  0000 C CNN
+F 1 "100pF" V 1662 3875 50  0000 C CNN
+F 2 "" H 1800 3875 50  0001 C CNN
+F 3 "~" H 1800 3875 50  0001 C CNN
+	1    1800 3875
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	1700 3500 1625 3500
+Wire Wire Line
+	1625 3875 1700 3875
+Wire Wire Line
+	2000 3500 1900 3500
+Wire Wire Line
+	1900 3875 2000 3875
+Wire Wire Line
+	2000 3500 2000 3700
+Wire Wire Line
+	1625 3500 1625 3700
+Connection ~ 1625 3700
+Wire Wire Line
+	1625 3700 1625 3875
+Connection ~ 2000 3700
+Wire Wire Line
+	2000 3700 2000 3875
+Text Notes 1225 5950 0    50   ~ 0
+From BGA2818 datasheet:\n\n"The value of the input and output DC blocking capacitors C2 and C3 should \nnot be more than 100 pF for applications above 100 MHz. However, when \nthe device is operated below 100 MHz, the capacitor value should be increased."\n\nHowever, conservative spice modeling of the blocking capacitors\nand parasitic series inductance indicates that 200pF caps will work better\nfor 10 - 100 MHz, and also pass up to 3 GHz with no trouble.\n\nWe'll just have to play around with this when it's built.
+Text Label 2025 4800 0    50   ~ 0
+high-Z
+Wire Wire Line
+	1475 3700 1525 3700
+$Comp
+L Device:C_Small C?
+U 1 1 5F53ED46
+P 1825 4800
+F 0 "C?" V 1596 4800 50  0000 C CNN
+F 1 "10nF" V 1687 4800 50  0000 C CNN
+F 2 "" H 1825 4800 50  0001 C CNN
+F 3 "~" H 1825 4800 50  0001 C CNN
+	1    1825 4800
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	2025 4800 1925 4800
+Wire Wire Line
+	1725 4800 1525 4800
+Wire Wire Line
+	1525 4800 1525 3700
+Connection ~ 1525 3700
+Wire Wire Line
+	1525 3700 1625 3700
+Text Label 7075 5125 0    50   ~ 0
+high-Z
 $EndSCHEMATC
