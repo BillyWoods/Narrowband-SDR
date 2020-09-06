@@ -949,21 +949,21 @@ Wire Wire Line
 	1675 2025 1675 2200
 Text Notes 1125 4275 0    50   ~ 0
 From BGA2818 datasheet:\n\n"The value of the input and output DC blocking capacitors C2 and C3 should \nnot be more than 100 pF for applications above 100 MHz. However, when \nthe device is operated below 100 MHz, the capacitor value should be increased."\n\nHowever, conservative spice modeling of the blocking capacitors\nand parasitic series inductance indicates that 200pF caps will work better\nfor 10 - 100 MHz, and also pass up to 3 GHz with no trouble.\n\nWe'll just have to play around with this when it's built.
-Text Label 1725 2550 0    50   ~ 0
+Text Label 1725 2775 0    50   ~ 0
 high-Z
 $Comp
 L Device:C_Small C?
 U 1 1 5F53ED46
-P 1525 2550
-F 0 "C?" V 1625 2550 50  0000 C CNN
-F 1 "1nF" V 1700 2550 50  0000 C CNN
-F 2 "" H 1525 2550 50  0001 C CNN
-F 3 "~" H 1525 2550 50  0001 C CNN
-	1    1525 2550
+P 1525 2775
+F 0 "C?" V 1625 2775 50  0000 C CNN
+F 1 "1nF" V 1700 2775 50  0000 C CNN
+F 2 "" H 1525 2775 50  0001 C CNN
+F 3 "~" H 1525 2775 50  0001 C CNN
+	1    1525 2775
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	1725 2550 1625 2550
+	1725 2775 1625 2775
 Text Label 6600 3925 0    50   ~ 0
 high-Z
 Wire Wire Line
@@ -1424,54 +1424,54 @@ Wire Wire Line
 $Comp
 L Device:L_Small L?
 U 1 1 5F6A02AA
-P 1175 2400
-F 0 "L?" H 1223 2446 50  0000 L CNN
-F 1 "10uH" H 1223 2355 50  0000 L CNN
-F 2 "" H 1175 2400 50  0001 C CNN
-F 3 "~" H 1175 2400 50  0001 C CNN
-	1    1175 2400
+P 1175 2625
+F 0 "L?" H 1222 2671 50  0000 L CNN
+F 1 "150nH" H 1222 2580 50  0000 L CNN
+F 2 "" H 1175 2625 50  0001 C CNN
+F 3 "~" H 1175 2625 50  0001 C CNN
+	1    1175 2625
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
 	1150 2025 1175 2025
 Wire Wire Line
-	1175 2300 1175 2025
+	1175 2250 1175 2025
 Connection ~ 1175 2025
 Wire Wire Line
 	1175 2025 1300 2025
 $Comp
 L Device:R_Small R?
 U 1 1 5F6C01FC
-P 1175 2675
-F 0 "R?" V 1100 2675 50  0000 C CNN
-F 1 "50" V 1025 2675 50  0000 C CNN
-F 2 "" H 1175 2675 50  0001 C CNN
-F 3 "~" H 1175 2675 50  0001 C CNN
-	1    1175 2675
+P 1175 2900
+F 0 "R?" V 1100 2900 50  0000 C CNN
+F 1 "50" V 1025 2900 50  0000 C CNN
+F 2 "" H 1175 2900 50  0001 C CNN
+F 3 "~" H 1175 2900 50  0001 C CNN
+	1    1175 2900
 	1    0    0    -1  
 $EndComp
 $Comp
 L power:GND #PWR?
 U 1 1 5F6C1B3E
-P 1175 2850
-F 0 "#PWR?" H 1175 2600 50  0001 C CNN
-F 1 "GND" H 1180 2677 50  0000 C CNN
-F 2 "" H 1175 2850 50  0001 C CNN
-F 3 "" H 1175 2850 50  0001 C CNN
-	1    1175 2850
+P 1175 3075
+F 0 "#PWR?" H 1175 2825 50  0001 C CNN
+F 1 "GND" H 1180 2902 50  0000 C CNN
+F 2 "" H 1175 3075 50  0001 C CNN
+F 3 "" H 1175 3075 50  0001 C CNN
+	1    1175 3075
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
 	1675 2025 2075 2025
 Wire Wire Line
-	1175 2500 1175 2550
+	1175 2725 1175 2775
 Wire Wire Line
-	1175 2550 1425 2550
-Connection ~ 1175 2550
+	1175 2775 1425 2775
+Connection ~ 1175 2775
 Wire Wire Line
-	1175 2550 1175 2575
+	1175 2775 1175 2800
 Wire Wire Line
-	1175 2775 1175 2850
+	1175 3000 1175 3075
 $Comp
 L Device:C_Small C?
 U 1 1 5F72E0B2
@@ -1496,4 +1496,17 @@ F 3 "" H 2450 1600 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	2275 1400 1950 1400
+$Comp
+L Device:L_Small L?
+U 1 1 5F76EF01
+P 1175 2350
+F 0 "L?" H 1222 2396 50  0000 L CNN
+F 1 "150nH" H 1222 2305 50  0000 L CNN
+F 2 "" H 1175 2350 50  0001 C CNN
+F 3 "~" H 1175 2350 50  0001 C CNN
+	1    1175 2350
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1175 2450 1175 2525
 $EndSCHEMATC
