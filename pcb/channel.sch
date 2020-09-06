@@ -851,20 +851,18 @@ this 22nF is awkward, can we use something else?\n
 $Comp
 L Device:C_Small C?
 U 1 1 5F4C7618
-P 8775 6250
-F 0 "C?" H 8867 6296 50  0000 L CNN
-F 1 "0.1uF" H 8867 6205 50  0000 L CNN
-F 2 "" H 8775 6250 50  0001 C CNN
-F 3 "~" H 8775 6250 50  0001 C CNN
-	1    8775 6250
+P 8100 6600
+F 0 "C?" H 8192 6646 50  0000 L CNN
+F 1 "0.1uF" H 8192 6555 50  0000 L CNN
+F 2 "" H 8100 6600 50  0001 C CNN
+F 3 "~" H 8100 6600 50  0001 C CNN
+	1    8100 6600
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	8775 6150 8775 5950
-Text GLabel 8775 6575 3    50   Input ~ 0
+Text GLabel 8100 6925 3    50   Input ~ 0
 24MHz_OSC
 Wire Wire Line
-	8775 6350 8775 6575
+	8100 6700 8100 6925
 Wire Wire Line
 	2175 3700 2000 3700
 $Comp
@@ -979,4 +977,120 @@ Wire Wire Line
 	1525 3700 1625 3700
 Text Label 7075 5125 0    50   ~ 0
 high-Z
+Wire Wire Line
+	8100 6150 8775 6150
+Wire Wire Line
+	8775 6150 8775 5950
+Wire Wire Line
+	8100 6150 8100 6500
+$Comp
+L Device:C_Small C?
+U 1 1 5F556360
+P 9175 6375
+F 0 "C?" H 9267 6421 50  0000 L CNN
+F 1 "39nF" H 9267 6330 50  0000 L CNN
+F 2 "" H 9175 6375 50  0001 C CNN
+F 3 "~" H 9175 6375 50  0001 C CNN
+	1    9175 6375
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C_Small C?
+U 1 1 5F556420
+P 9575 6500
+F 0 "C?" H 9667 6546 50  0000 L CNN
+F 1 "2.7nF" H 9667 6455 50  0000 L CNN
+F 2 "" H 9575 6500 50  0001 C CNN
+F 3 "~" H 9575 6500 50  0001 C CNN
+	1    9575 6500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R_Small R?
+U 1 1 5F556604
+P 9175 6725
+F 0 "R?" H 9050 6675 50  0000 C CNN
+F 1 "360R" H 9000 6775 50  0000 C CNN
+F 2 "" H 9175 6725 50  0001 C CNN
+F 3 "~" H 9175 6725 50  0001 C CNN
+	1    9175 6725
+	-1   0    0    1   
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5F556AC9
+P 9175 6950
+F 0 "#PWR?" H 9175 6700 50  0001 C CNN
+F 1 "GND" H 9180 6777 50  0000 C CNN
+F 2 "" H 9175 6950 50  0001 C CNN
+F 3 "" H 9175 6950 50  0001 C CNN
+	1    9175 6950
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9175 5950 9175 6175
+Wire Wire Line
+	9175 6475 9175 6525
+Wire Wire Line
+	9175 6825 9175 6875
+Wire Wire Line
+	9175 6875 9575 6875
+Wire Wire Line
+	9575 6875 9575 6600
+Connection ~ 9175 6875
+Wire Wire Line
+	9175 6875 9175 6950
+Wire Wire Line
+	9175 6525 8975 6525
+Wire Wire Line
+	8975 6525 8975 5950
+Connection ~ 9175 6525
+Wire Wire Line
+	9175 6525 9175 6625
+Wire Wire Line
+	9175 6175 9575 6175
+Wire Wire Line
+	9575 6175 9575 6400
+Connection ~ 9175 6175
+Wire Wire Line
+	9175 6175 9175 6275
+$Comp
+L Device:R_Small R?
+U 1 1 5F568D1A
+P 9875 6175
+F 0 "R?" V 9800 6175 50  0000 C CNN
+F 1 "500R" V 9725 6175 50  0000 C CNN
+F 2 "" H 9875 6175 50  0001 C CNN
+F 3 "~" H 9875 6175 50  0001 C CNN
+	1    9875 6175
+	0    -1   -1   0   
+$EndComp
+Wire Wire Line
+	9575 6175 9775 6175
+Connection ~ 9575 6175
+$Comp
+L Device:C_Small C?
+U 1 1 5F56C732
+P 10150 6500
+F 0 "C?" H 10242 6546 50  0000 L CNN
+F 1 "1.2nF" H 10242 6455 50  0000 L CNN
+F 2 "" H 10150 6500 50  0001 C CNN
+F 3 "~" H 10150 6500 50  0001 C CNN
+	1    10150 6500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	9975 6175 10150 6175
+Wire Wire Line
+	10150 6175 10150 6400
+Wire Wire Line
+	10150 6600 10150 6875
+Wire Wire Line
+	10150 6875 9575 6875
+Connection ~ 9575 6875
+Wire Wire Line
+	10150 6175 10150 5950
+Wire Wire Line
+	10150 5950 9375 5950
+Connection ~ 10150 6175
 $EndSCHEMATC
