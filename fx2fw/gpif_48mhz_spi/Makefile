@@ -18,12 +18,12 @@
 
 # change location of fx2libdir if needed
 INCLUDES=./include
-SOURCES=main.c gpif_dat.c gpif-acquisition.c 
+SOURCES=main.c build/gpif_dat.c gpif-acquisition.c 
 #A51_SOURCES=
 BASENAME=main
-
 
 include ../fx2lib/lib/fx2.mk
 
 gpif_dat.c: gpif_waveforms.c
-	$(FX2LIBDIR)/utils/gpif2dat $< $@
+	$(FX2LIBDIR)/utils/gpif2dat $< build/$@
+
