@@ -851,18 +851,16 @@ this 22nF is awkward, can we use something else?\nAlso, add some PCB capacitance
 $Comp
 L Device:C_Small C?
 U 1 1 5F4C7618
-P 7625 5400
-F 0 "C?" H 7717 5446 50  0000 L CNN
-F 1 "1nF" H 7717 5355 50  0000 L CNN
-F 2 "" H 7625 5400 50  0001 C CNN
-F 3 "~" H 7625 5400 50  0001 C CNN
-	1    7625 5400
-	1    0    0    -1  
+P 7125 4950
+F 0 "C?" V 7000 4900 50  0000 L CNN
+F 1 "1nF" V 7250 4875 50  0000 L CNN
+F 2 "" H 7125 4950 50  0001 C CNN
+F 3 "~" H 7125 4950 50  0001 C CNN
+	1    7125 4950
+	0    1    1    0   
 $EndComp
-Text GLabel 7625 5725 3    50   Input ~ 0
+Text GLabel 6675 4950 0    50   Input ~ 0
 24MHz_OSC
-Wire Wire Line
-	7625 5500 7625 5725
 $Comp
 L Device:C_Small C?
 U 1 1 5F52BEC8
@@ -967,11 +965,7 @@ Wire Wire Line
 Text Label 6600 3925 0    50   ~ 0
 high-Z
 Wire Wire Line
-	7625 4950 8300 4950
-Wire Wire Line
 	8300 4950 8300 4750
-Wire Wire Line
-	7625 4950 7625 5300
 $Comp
 L Device:C_Small C?
 U 1 1 5F556360
@@ -1522,4 +1516,54 @@ F 3 "~" H 1175 2350 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	1175 2450 1175 2500
+$Comp
+L Device:C_Small C?
+U 1 1 5F6DE413
+P 7550 5200
+F 0 "C?" H 7650 5150 50  0000 L CNN
+F 1 "10pF" H 7250 5200 50  0000 L CNN
+F 2 "" H 7550 5200 50  0001 C CNN
+F 3 "~" H 7550 5200 50  0001 C CNN
+	1    7550 5200
+	-1   0    0    1   
+$EndComp
+$Comp
+L Device:R_Small R?
+U 1 1 5F6DF083
+P 7550 5475
+F 0 "R?" V 7475 5475 50  0000 C CNN
+F 1 "50" V 7400 5475 50  0000 C CNN
+F 2 "" H 7550 5475 50  0001 C CNN
+F 3 "~" H 7550 5475 50  0001 C CNN
+	1    7550 5475
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7225 4950 7550 4950
+Wire Wire Line
+	7550 5100 7550 4950
+Connection ~ 7550 4950
+Wire Wire Line
+	7550 4950 8300 4950
+Wire Wire Line
+	6675 4950 7025 4950
+Wire Wire Line
+	7550 5300 7550 5375
+$Comp
+L power:GND #PWR?
+U 1 1 5F709A07
+P 7550 5650
+F 0 "#PWR?" H 7550 5400 50  0001 C CNN
+F 1 "GND" H 7555 5477 50  0000 C CNN
+F 2 "" H 7550 5650 50  0001 C CNN
+F 3 "" H 7550 5650 50  0001 C CNN
+	1    7550 5650
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	7550 5575 7550 5650
+Text Notes 7650 5400 0    50   ~ 0
+Reflection snubber
+Text Notes 5600 4825 0    50   ~ 0
+50 Ohm transmission line for clock
 $EndSCHEMATC

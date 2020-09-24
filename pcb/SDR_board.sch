@@ -25,11 +25,7 @@ F4 "Q_DOUT" I R 36750 12000 50
 $EndSheet
 Text GLabel 40850 13850 2    50   Input ~ 0
 24MHz_OSC
-Wire Wire Line
-	40325 13850 40850 13850
 NoConn ~ 40325 13350
-Text Notes 40425 13700 0    50   ~ 0
-Is this coupling to a reference oscillator correct?\nShould it be through a capacitor? Of what size?
 Text GLabel 38725 15050 0    50   Input ~ 0
 ADC_CLK
 Text GLabel 38925 15350 0    50   Input ~ 0
@@ -770,4 +766,160 @@ Wire Wire Line
 Wire Wire Line
 	39825 19850 40750 19850
 Connection ~ 40750 19850
+Text GLabel 44075 11850 2    50   Input ~ 0
+24MHz_OSC
+$Comp
+L Oscillator:XO32 X?
+U 1 1 5F6C6D9E
+P 43250 11850
+F 0 "X?" H 43591 11896 50  0000 L CNN
+F 1 "XO32" H 43591 11805 50  0000 L CNN
+F 2 "Oscillator:Oscillator_SMD_EuroQuartz_XO32-4Pin_3.2x2.5mm" H 43950 11500 50  0001 C CNN
+F 3 "http://cdn-reichelt.de/documents/datenblatt/B400/XO32.pdf" H 43150 11850 50  0001 C CNN
+	1    43250 11850
+	1    0    0    -1  
+$EndComp
+Text Notes 42450 10900 0    50   ~ 0
+E.g. http://www.farnell.com/datasheets/2864171.pdf  or\n     http://www.farnell.com/datasheets/2865847.pdf <- will drive up to 30pF!
+Wire Wire Line
+	43550 11850 44075 11850
+$Comp
+L power:GND #PWR?
+U 1 1 5F6CDA4F
+P 43250 12150
+F 0 "#PWR?" H 43250 11900 50  0001 C CNN
+F 1 "GND" H 43255 11977 50  0000 C CNN
+F 2 "" H 43250 12150 50  0001 C CNN
+F 3 "" H 43250 12150 50  0001 C CNN
+	1    43250 12150
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3VA #PWR?
+U 1 1 5F6D1FA0
+P 43250 11250
+F 0 "#PWR?" H 43250 11100 50  0001 C CNN
+F 1 "+3.3VA" H 43265 11423 50  0000 C CNN
+F 2 "" H 43250 11250 50  0001 C CNN
+F 3 "" H 43250 11250 50  0001 C CNN
+	1    43250 11250
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	43250 11250 43250 11300
+$Comp
+L Device:C_Small C?
+U 1 1 5F6DC36B
+P 43900 11400
+F 0 "C?" H 43992 11446 50  0000 L CNN
+F 1 "10nF" H 43992 11355 50  0000 L CNN
+F 2 "" H 43900 11400 50  0001 C CNN
+F 3 "~" H 43900 11400 50  0001 C CNN
+	1    43900 11400
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5F6DC371
+P 43900 11500
+F 0 "#PWR?" H 43900 11250 50  0001 C CNN
+F 1 "GND" H 43905 11327 50  0000 C CNN
+F 2 "" H 43900 11500 50  0001 C CNN
+F 3 "" H 43900 11500 50  0001 C CNN
+	1    43900 11500
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C_Small C?
+U 1 1 5F6E6885
+P 43525 11400
+F 0 "C?" H 43617 11446 50  0000 L CNN
+F 1 "1nF" H 43617 11355 50  0000 L CNN
+F 2 "" H 43525 11400 50  0001 C CNN
+F 3 "~" H 43525 11400 50  0001 C CNN
+	1    43525 11400
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5F6E692C
+P 43525 11500
+F 0 "#PWR?" H 43525 11250 50  0001 C CNN
+F 1 "GND" H 43530 11327 50  0000 C CNN
+F 2 "" H 43525 11500 50  0001 C CNN
+F 3 "" H 43525 11500 50  0001 C CNN
+	1    43525 11500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	43250 11300 43525 11300
+Connection ~ 43250 11300
+Wire Wire Line
+	43250 11300 43250 11550
+Connection ~ 43525 11300
+Wire Wire Line
+	43525 11300 43900 11300
+Text Notes 43625 12075 0    50   ~ 0
+15pF loading max on this output
+$Comp
+L power:+3.3VA #PWR?
+U 1 1 5F6EB74D
+P 42750 11750
+F 0 "#PWR?" H 42750 11600 50  0001 C CNN
+F 1 "+3.3VA" H 42765 11923 50  0000 C CNN
+F 2 "" H 42750 11750 50  0001 C CNN
+F 3 "" H 42750 11750 50  0001 C CNN
+	1    42750 11750
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	42950 11850 42750 11850
+Wire Wire Line
+	42750 11850 42750 11750
+Text Notes 40625 18950 0    50   ~ 0
+Two inductors in series to be able to use ones with lower series resistance?
+$Comp
+L Device:C_Small C?
+U 1 1 5F6F525F
+P 44275 11400
+F 0 "C?" H 44367 11446 50  0000 L CNN
+F 1 "0.1uF" H 44367 11355 50  0000 L CNN
+F 2 "" H 44275 11400 50  0001 C CNN
+F 3 "~" H 44275 11400 50  0001 C CNN
+	1    44275 11400
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5F6F5265
+P 44275 11500
+F 0 "#PWR?" H 44275 11250 50  0001 C CNN
+F 1 "GND" H 44280 11327 50  0000 C CNN
+F 2 "" H 44275 11500 50  0001 C CNN
+F 3 "" H 44275 11500 50  0001 C CNN
+	1    44275 11500
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	43900 11300 44275 11300
+Connection ~ 43900 11300
+Text Notes 42575 12625 0    50   ~ 0
+10 to 90% rise time of 8ns (max) driving C_L = 15pF\ngives a max output resistance of 240 Ohms
+Text Notes 42150 12900 0    50   ~ 0
+TODO: buffer the clock?, using http://www.farnell.com/datasheets/2354008.pdf
+$Comp
+L Device:C_Small C?
+U 1 1 5F7292D7
+P 40575 13850
+F 0 "C?" V 40450 13800 50  0000 L CNN
+F 1 "1nF" V 40700 13775 50  0000 L CNN
+F 2 "" H 40575 13850 50  0001 C CNN
+F 3 "~" H 40575 13850 50  0001 C CNN
+	1    40575 13850
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	40325 13850 40475 13850
+Wire Wire Line
+	40675 13850 40850 13850
 $EndSCHEMATC
