@@ -1,0 +1,9 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP NB3L553
+D 1:4 Clock Fanout Buffer
+K clock fanout buffer
+F http://www.farnell.com/datasheets/2354008.pdf
+$ENDCMP
+#
+#End Doc Library
