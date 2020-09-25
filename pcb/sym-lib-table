@@ -5,4 +5,5 @@
   (lib (name MAX19777)(type Legacy)(uri ${KIPRJMOD}/lib/MAX19777AZA.lib)(options "")(descr ""))
   (lib (name opamps)(type Legacy)(uri ${KIPRJMOD}/lib/opamps.lib)(options "")(descr ""))
   (lib (name NB3L553)(type Legacy)(uri /home/billy/Narrowband-SDR/pcb/lib/NB3L553.lib)(options "")(descr ""))
+  (lib (name ADS7883)(type Legacy)(uri /home/billy/Narrowband-SDR/pcb/lib/ADS7883.lib)(options "")(descr ""))
 )

@@ -1,0 +1,7 @@
+EESchema-DOCLIB  Version 2.0
+#
+$CMP ADS7883
+D 12-bit 3MSPS ADC
+$ENDCMP
+#
+#End Doc Library
