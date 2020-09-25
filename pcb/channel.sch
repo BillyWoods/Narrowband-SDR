@@ -92,16 +92,16 @@ $EndComp
 $Comp
 L power:+3.3VA #PWR?
 U 1 1 5F485CF1
-P 2275 1300
-F 0 "#PWR?" H 2275 1150 50  0001 C CNN
-F 1 "+3.3VA" H 2290 1473 50  0000 C CNN
-F 2 "" H 2275 1300 50  0001 C CNN
-F 3 "" H 2275 1300 50  0001 C CNN
-	1    2275 1300
+P 2275 1075
+F 0 "#PWR?" H 2275 925 50  0001 C CNN
+F 1 "+3.3VA" H 2290 1248 50  0000 C CNN
+F 2 "" H 2275 1075 50  0001 C CNN
+F 3 "" H 2275 1075 50  0001 C CNN
+	1    2275 1075
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2275 1300 2275 1400
+	2275 1075 2275 1175
 $Comp
 L power:GND #PWR?
 U 1 1 5F485DD2
@@ -118,17 +118,15 @@ Wire Wire Line
 $Comp
 L Device:C_Small C?
 U 1 1 5F485EEE
-P 1950 1500
-F 0 "C?" H 2042 1546 50  0000 L CNN
-F 1 "22nF" H 2042 1455 50  0000 L CNN
-F 2 "" H 1950 1500 50  0001 C CNN
-F 3 "~" H 1950 1500 50  0001 C CNN
-	1    1950 1500
+P 1950 1300
+F 0 "C?" H 2042 1346 50  0000 L CNN
+F 1 "10nF" H 2042 1255 50  0000 L CNN
+F 2 "" H 1950 1300 50  0001 C CNN
+F 3 "~" H 1950 1300 50  0001 C CNN
+	1    1950 1300
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	2450 1400 2275 1400
-Connection ~ 2275 1400
+Connection ~ 2275 1175
 $Comp
 L power:GND #PWR?
 U 1 1 5F48628E
@@ -140,17 +138,15 @@ F 3 "" H 950 2225 50  0001 C CNN
 	1    950  2225
 	1    0    0    -1  
 $EndComp
-Wire Wire Line
-	2275 1400 2275 1725
 $Comp
 L power:GND #PWR?
 U 1 1 5F486BFD
-P 1950 1600
-F 0 "#PWR?" H 1950 1350 50  0001 C CNN
-F 1 "GND" H 1955 1427 50  0000 C CNN
-F 2 "" H 1950 1600 50  0001 C CNN
-F 3 "" H 1950 1600 50  0001 C CNN
-	1    1950 1600
+P 1950 1400
+F 0 "#PWR?" H 1950 1150 50  0001 C CNN
+F 1 "GND" H 1955 1227 50  0000 C CNN
+F 2 "" H 1950 1400 50  0001 C CNN
+F 3 "" H 1950 1400 50  0001 C CNN
+	1    1950 1400
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -796,14 +792,14 @@ L Device:CP_Small C?
 U 1 1 5F4BA715
 P 13650 7825
 F 0 "C?" H 13738 7871 50  0000 L CNN
-F 1 "10uF" H 13738 7780 50  0000 L CNN
+F 1 "4.7uF" H 13738 7780 50  0000 L CNN
 F 2 "" H 13650 7825 50  0001 C CNN
 F 3 "~" H 13650 7825 50  0001 C CNN
 	1    13650 7825
 	1    0    0    -1  
 $EndComp
 Text Notes 13975 7900 0    50   ~ 0
-Use tantalum?\n10uF is a big load; we'll try and layout the\nboard so that two ADCs can share one.
+Use tantalum?\n4.7uF is a big load; we'll try and layout the\nboard so that two ADCs can share one.
 $Comp
 L Device:C_Small C?
 U 1 1 5F4BB0DE
@@ -846,8 +842,8 @@ Connection ~ 11025 9975
 Wire Wire Line
 	11025 10775 11450 10775
 Connection ~ 11025 10775
-Text Notes 2525 1275 0    50   ~ 0
-this 22nF is awkward, can we use something else?\nAlso, add some PCB capacitance in the layout.
+Text Notes 2525 1050 0    50   ~ 0
+Also, add some PCB capacitance in the layout.
 $Comp
 L Device:C_Small C?
 U 1 1 5F4C7618
@@ -859,8 +855,6 @@ F 3 "~" H 7125 4950 50  0001 C CNN
 	1    7125 4950
 	0    1    1    0   
 $EndComp
-Text GLabel 6675 4950 0    50   Input ~ 0
-24MHz_OSC
 $Comp
 L Device:C_Small C?
 U 1 1 5F52BEC8
@@ -947,23 +941,6 @@ Wire Wire Line
 	1675 2025 1675 2200
 Text Notes 1150 4800 0    50   ~ 0
 From BGA2818 datasheet:\n\n"The value of the input and output DC blocking capacitors C2 and C3 should \nnot be more than 100 pF for applications above 100 MHz. However, when \nthe device is operated below 100 MHz, the capacitor value should be increased."\n\nHowever, conservative spice modeling of the blocking capacitors\nand parasitic series inductance indicates that 200pF caps will work better\nfor 10 - 100 MHz, and also pass up to 3 GHz with no trouble.\n\nWe'll just have to play around with this when it's built.
-Text Label 1725 3025 0    50   ~ 0
-high-Z
-$Comp
-L Device:C_Small C?
-U 1 1 5F53ED46
-P 1525 3025
-F 0 "C?" V 1625 3025 50  0000 C CNN
-F 1 "1nF" V 1700 3025 50  0000 C CNN
-F 2 "" H 1525 3025 50  0001 C CNN
-F 3 "~" H 1525 3025 50  0001 C CNN
-	1    1525 3025
-	0    1    1    0   
-$EndComp
-Wire Wire Line
-	1725 3025 1625 3025
-Text Label 6600 3925 0    50   ~ 0
-high-Z
 Wire Wire Line
 	8300 4950 8300 4750
 $Comp
@@ -1321,8 +1298,6 @@ Wire Wire Line
 Connection ~ 8325 925 
 Wire Wire Line
 	8150 925  8325 925 
-Text Notes 6550 6400 0    50   ~ 0
-TODO: proper transmission line and \nterminations for the oscillator signal
 $Comp
 L Device:C_Small C?
 U 1 1 5F686FDF
@@ -1458,38 +1433,31 @@ $EndComp
 Wire Wire Line
 	1675 2025 2075 2025
 Wire Wire Line
-	1175 2975 1175 3025
-Wire Wire Line
-	1175 3025 1425 3025
-Connection ~ 1175 3025
-Wire Wire Line
-	1175 3025 1175 3050
-Wire Wire Line
 	1175 3250 1175 3325
 $Comp
 L Device:C_Small C?
 U 1 1 5F72E0B2
-P 2450 1500
-F 0 "C?" H 2300 1425 50  0000 C CNN
-F 1 "100pF" H 2225 1525 50  0000 C CNN
-F 2 "" H 2450 1500 50  0001 C CNN
-F 3 "~" H 2450 1500 50  0001 C CNN
-	1    2450 1500
+P 2450 1300
+F 0 "C?" H 2300 1225 50  0000 C CNN
+F 1 "100pF" H 2225 1325 50  0000 C CNN
+F 2 "" H 2450 1300 50  0001 C CNN
+F 3 "~" H 2450 1300 50  0001 C CNN
+	1    2450 1300
 	-1   0    0    1   
 $EndComp
 $Comp
 L power:GND #PWR?
 U 1 1 5F73E42C
-P 2450 1600
-F 0 "#PWR?" H 2450 1350 50  0001 C CNN
-F 1 "GND" H 2455 1427 50  0000 C CNN
-F 2 "" H 2450 1600 50  0001 C CNN
-F 3 "" H 2450 1600 50  0001 C CNN
-	1    2450 1600
+P 2450 1400
+F 0 "#PWR?" H 2450 1150 50  0001 C CNN
+F 1 "GND" H 2455 1227 50  0000 C CNN
+F 2 "" H 2450 1400 50  0001 C CNN
+F 3 "" H 2450 1400 50  0001 C CNN
+	1    2450 1400
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	2275 1400 1950 1400
+	2275 1175 1950 1175
 $Comp
 L Device:L_Small L?
 U 1 1 5F76EF01
@@ -1562,8 +1530,71 @@ F 3 "" H 7550 5650 50  0001 C CNN
 $EndComp
 Wire Wire Line
 	7550 5575 7550 5650
-Text Notes 7650 5400 0    50   ~ 0
-Reflection snubber
+Text Notes 6825 6300 0    50   ~ 0
+Reflection snubber.\nAiming for RC time constant of 0.5ns.\nReflections might be an issue if the\nclock fanout buffer is not used.
 Text Notes 5600 4825 0    50   ~ 0
 50 Ohm transmission line for clock
+Text HLabel 6675 4950 0    50   Input ~ 0
+CLK_IN
+Text Label 1875 3025 0    50   ~ 0
+high-Z
+Text Label 6450 3975 0    50   ~ 0
+high-Z
+Wire Wire Line
+	1175 2975 1175 3025
+$Comp
+L Jumper:SolderJumper_2_Bridged JP?
+U 1 1 5F8375CF
+P 1575 3025
+F 0 "JP?" H 1600 3125 50  0000 C CNN
+F 1 "alt_coupling" H 1600 2925 50  0000 C CNN
+F 2 "" H 1575 3025 50  0001 C CNN
+F 3 "~" H 1575 3025 50  0001 C CNN
+	1    1575 3025
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1175 3025 1425 3025
+Connection ~ 1175 3025
+Wire Wire Line
+	1175 3025 1175 3050
+Wire Wire Line
+	1725 3025 1875 3025
+Wire Wire Line
+	2275 1175 2275 1725
+$Comp
+L Device:C_Small C?
+U 1 1 5F864E91
+P 2900 1300
+F 0 "C?" H 2992 1346 50  0000 L CNN
+F 1 "10nF" H 2992 1255 50  0000 L CNN
+F 2 "" H 2900 1300 50  0001 C CNN
+F 3 "~" H 2900 1300 50  0001 C CNN
+	1    2900 1300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5F864F4F
+P 2900 1400
+F 0 "#PWR?" H 2900 1150 50  0001 C CNN
+F 1 "GND" H 2905 1227 50  0000 C CNN
+F 2 "" H 2900 1400 50  0001 C CNN
+F 3 "" H 2900 1400 50  0001 C CNN
+	1    2900 1400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	2900 1175 2900 1200
+Wire Wire Line
+	2275 1175 2450 1175
+Wire Wire Line
+	2450 1200 2450 1175
+Connection ~ 2450 1175
+Wire Wire Line
+	2450 1175 2900 1175
+Wire Wire Line
+	1950 1200 1950 1175
+Text Notes 1400 3375 0    50   ~ 0
+This is a pretty poor couping from 50 Ohms to LF high-Z.\nThe trace can be cut and something else done.
 $EndSCHEMATC
