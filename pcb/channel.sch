@@ -1387,8 +1387,6 @@ F 3 "" H 10925 3275 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	10600 2950 10925 2950
-Wire Wire Line
 	10925 2950 10925 3075
 $Comp
 L Device:L_Small L?
@@ -1821,4 +1819,8 @@ Wire Notes Line
 	8850 9650 8850 7200
 Text Notes 10100 7125 0    50   ~ 0
 Primary choice for ADCs
+Text Notes 3925 9125 0    50   ~ 0
+How comparable are these Op amps to the THS4031?
+Wire Wire Line
+	10600 2950 10925 2950
 $EndSCHEMATC
