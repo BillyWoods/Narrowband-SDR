@@ -595,12 +595,12 @@ Wire Wire Line
 $Comp
 L Device:L_Small L3
 U 1 1 5F555ED2
-P 13425 2150
-F 0 "L3" V 13247 2150 50  0000 C CNN
-F 1 "4.7uH" V 13338 2150 50  0000 C CNN
-F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 13425 2150 50  0001 C CNN
-F 3 "~" H 13425 2150 50  0001 C CNN
-	1    13425 2150
+P 13650 2150
+F 0 "L3" V 13472 2150 50  0000 C CNN
+F 1 "4.7uH" V 13563 2150 50  0000 C CNN
+F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 13650 2150 50  0001 C CNN
+F 3 "~" H 13650 2150 50  0001 C CNN
+	1    13650 2150
 	0    1    1    0   
 $EndComp
 $Comp
@@ -619,8 +619,6 @@ Wire Wire Line
 Wire Wire Line
 	14000 2450 14000 2550
 Connection ~ 12750 2150
-Wire Wire Line
-	12750 2150 13325 2150
 $Comp
 L power:+3.3VA #PWR03
 U 1 1 5F566451
@@ -944,8 +942,8 @@ L Device:L_Small L1
 U 1 1 5F7908D4
 P 9975 2150
 F 0 "L1" V 9800 2150 50  0000 C CNN
-F 1 "4.7uH" V 9900 2150 50  0000 C CNN
-F 2 "Inductor_SMD:L_0805_2012Metric_Pad1.15x1.40mm_HandSolder" H 9975 2150 50  0001 C CNN
+F 1 "10uH" V 9900 2150 50  0000 C CNN
+F 2 "Inductor_SMD:L_Taiyo-Yuden_NR-60xx_HandSoldering" H 9975 2150 50  0001 C CNN
 F 3 "~" H 9975 2150 50  0001 C CNN
 	1    9975 2150
 	0    1    1    0   
@@ -1479,7 +1477,7 @@ F 3 "~" H 10175 2350 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	13525 2150 14000 2150
+	13750 2150 14000 2150
 Wire Wire Line
 	9750 1975 9750 2150
 Wire Wire Line
@@ -1527,4 +1525,19 @@ Wire Wire Line
 Connection ~ 11150 3425
 Wire Wire Line
 	10150 3300 10150 3425
+$Comp
+L Device:L_Small L4
+U 1 1 5F8056F8
+P 13150 2150
+F 0 "L4" V 12975 2150 50  0000 C CNN
+F 1 "10uH" V 13075 2150 50  0000 C CNN
+F 2 "Inductor_SMD:L_Taiyo-Yuden_NR-60xx_HandSoldering" H 13150 2150 50  0001 C CNN
+F 3 "~" H 13150 2150 50  0001 C CNN
+	1    13150 2150
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	12750 2150 13050 2150
+Wire Wire Line
+	13250 2150 13550 2150
 $EndSCHEMATC
