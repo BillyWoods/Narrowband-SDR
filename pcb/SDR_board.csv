@@ -1,8 +1,8 @@
 "Source:","/home/billy/Narrowband-SDR/pcb/SDR_board.sch"
-"Date:","Mon 28 Sep 2020 15:07:11 AEST"
+"Date:","Mon 28 Sep 2020 20:15:16 AEST"
 "Tool:","Eeschema 5.0.2-bee76a0~70~ubuntu18.04.1"
 "Generator:","/usr/share/kicad/plugins/bom_csv_grouped_by_value.py"
-"Component Count:","477"
+"Component Count:","478"
 
 "Individual Components:"
 
@@ -27,6 +27,7 @@
 "","","C18","0.1uF","Device:C_Small","Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder","~","","","","",""
 "","","C19","10nF","Device:C_Small","Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder","~","","","","",""
 "","","C20","0.1uF","Device:C_Small","Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder","~","","","","",""
+"","","C21","1uF","Device:C_Small","Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder","~","","","","",""
 "","","C201","0.1uF","Device:C_Small","Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder","~","","","","",""
 "","","C202","0.1uF","Device:C_Small","Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder","~","","","","",""
 "","","C203","100pF","Device:C_Small","Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder","~","","","","",""
@@ -490,7 +491,7 @@
 "Collated Components:"
 
 "Item","Qty","Reference(s)","Value","LibPart","Footprint","Datasheet","Field4","Field5","Field6","Field7","Field8"
-"1","6","C1, C2, C226, C326, C426, C526","1uF","Device:C_Small","Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder","~","","","","",""
+"1","7","C1, C2, C21, C226, C326, C426, C526","1uF","Device:C_Small","Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder","~","","","","",""
 "2","34","C3, C8, C10, C14, C18, C20, C201, C202, C218, C225, C239, C244, C248, C301, C302, C318, C325, C339, C344, C348, C401, C402, C418, C425, C439, C444, C448, C501, C502, C518, C525, C539, C544, C548","0.1uF","Device:C_Small","Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder","~","","","","",""
 "3","6","C4, C5, C246, C346, C446, C546","4.7uF","Device:CP_Small","Capacitor_SMD:C_1206_3216Metric_Pad1.42x1.75mm_HandSolder","~","","","","",""
 "4","23","C6, C9, C16, C224, C227, C230, C231, C234, C324, C327, C330, C331, C334, C424, C427, C430, C431, C434, C524, C527, C530, C531, C534","1nF","Device:C_Small","Capacitor_SMD:C_0603_1608Metric_Pad1.05x0.95mm_HandSolder","~","","","","",""
