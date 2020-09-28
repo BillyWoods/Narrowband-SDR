@@ -678,19 +678,6 @@ F 3 "" H 40025 9200 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:+3.3VA #PWR05
-U 1 1 5F6D1FA0
-P 40025 8300
-F 0 "#PWR05" H 40025 8150 50  0001 C CNN
-F 1 "+3.3VA" H 40040 8473 50  0000 C CNN
-F 2 "" H 40025 8300 50  0001 C CNN
-F 3 "" H 40025 8300 50  0001 C CNN
-	1    40025 8300
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	40025 8300 40025 8350
-$Comp
 L Device:C_Small C7
 U 1 1 5F6DC36B
 P 41025 8500
@@ -1010,24 +997,12 @@ Wire Wire Line
 	40025 8350 40650 8350
 Wire Wire Line
 	41825 8400 41825 8350
-Connection ~ 41825 8350
-Wire Wire Line
-	41825 8350 42525 8350
 Wire Wire Line
 	41400 8400 41400 8350
-Connection ~ 41400 8350
-Wire Wire Line
-	41400 8350 41825 8350
 Wire Wire Line
 	41025 8400 41025 8350
-Connection ~ 41025 8350
-Wire Wire Line
-	41025 8350 41400 8350
 Wire Wire Line
 	40650 8400 40650 8350
-Connection ~ 40650 8350
-Wire Wire Line
-	40650 8350 41025 8350
 $Comp
 L Device:C_Small C14
 U 1 1 5F82814C
@@ -1527,4 +1502,29 @@ Wire Wire Line
 Wire Wire Line
 	39625 7475 40050 7475
 Connection ~ 40050 7475
+$Comp
+L power:+3.3V #PWR?
+U 1 1 5FA293E7
+P 40025 8225
+F 0 "#PWR?" H 40025 8075 50  0001 C CNN
+F 1 "+3.3V" H 40040 8398 50  0000 C CNN
+F 2 "" H 40025 8225 50  0001 C CNN
+F 3 "" H 40025 8225 50  0001 C CNN
+	1    40025 8225
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	41400 8350 41825 8350
+Connection ~ 41400 8350
+Wire Wire Line
+	41825 8350 42525 8350
+Connection ~ 41825 8350
+Wire Wire Line
+	40650 8350 41025 8350
+Connection ~ 40650 8350
+Wire Wire Line
+	41025 8350 41400 8350
+Connection ~ 41025 8350
+Wire Wire Line
+	40025 8225 40025 8350
 $EndSCHEMATC
