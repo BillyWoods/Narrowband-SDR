@@ -1014,8 +1014,6 @@ Wire Wire Line
 	7275 5675 6950 5675
 Wire Wire Line
 	6950 5675 6950 5850
-Text Notes 7225 5350 0    50   ~ 0
-One of these jumpers is intended to be left unpopulated
 Wire Wire Line
 	11350 4425 11200 4425
 Wire Wire Line
@@ -1377,45 +1375,15 @@ Wire Wire Line
 	12650 5625 12650 5750
 Text GLabel 13700 6300 2    50   Input ~ 0
 FX2LP_AUX_OSC
-$Comp
-L Device:R_Small R11
-U 1 1 5F771C98
-P 8000 5500
-F 0 "R11" V 7900 5475 50  0000 L CNN
-F 1 "0" V 8100 5475 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 8000 5500 50  0001 C CNN
-F 3 "~" H 8000 5500 50  0001 C CNN
-	1    8000 5500
-	0    1    1    0   
-$EndComp
-$Comp
-L Device:R_Small R12
-U 1 1 5F771E42
-P 8000 5800
-F 0 "R12" V 7900 5775 50  0000 L CNN
-F 1 "0" V 8100 5775 50  0000 L CNN
-F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 8000 5800 50  0001 C CNN
-F 3 "~" H 8000 5800 50  0001 C CNN
-	1    8000 5800
-	0    1    1    0   
-$EndComp
 Text GLabel 8200 5800 2    50   Input ~ 0
 FX2LP_AUX_OSC
-Wire Wire Line
-	8225 5500 8100 5500
-Wire Wire Line
-	7900 5500 7825 5500
 Wire Wire Line
 	7825 5500 7825 5675
 Wire Wire Line
 	7475 5675 7825 5675
 Wire Wire Line
-	7900 5800 7825 5800
-Wire Wire Line
 	7825 5800 7825 5675
 Connection ~ 7825 5675
-Wire Wire Line
-	8100 5800 8200 5800
 Text Notes 12950 5525 0    50   ~ 0
 Auxillary crystal. Leave unpopulated unless\nwe want to run the tuners and FX2LP off\ndifferent oscillators.
 Connection ~ 10950 3425
@@ -1450,4 +1418,8 @@ Wire Wire Line
 Connection ~ 5450 4425
 Wire Wire Line
 	5450 4425 5800 4425
+Wire Wire Line
+	7825 5500 8225 5500
+Wire Wire Line
+	7825 5800 8200 5800
 $EndSCHEMATC
