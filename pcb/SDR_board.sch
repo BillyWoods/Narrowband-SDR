@@ -1,5 +1,4 @@
 EESchema Schematic File Version 4
-LIBS:SDR_board-cache
 EELAYER 26 0
 EELAYER END
 $Descr A3 16535 11693
@@ -1422,4 +1421,8 @@ Wire Wire Line
 	7825 5500 8225 5500
 Wire Wire Line
 	7825 5800 8200 5800
+Text Label 7400 7150 0    50   ~ 0
+D_P
+Text Label 7400 7250 0    50   ~ 0
+D_N
 $EndSCHEMATC
