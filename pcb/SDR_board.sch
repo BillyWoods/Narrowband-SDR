@@ -681,9 +681,9 @@ F 3 "http://www.farnell.com/datasheets/2354008.pdf" H 13300 3450 50  0001 C CNN
 	1    13200 3900
 	-1   0    0    -1  
 $EndComp
-Text Label 12225 3975 0    50   ~ 0
+Text Label 11900 3975 0    50   ~ 0
 TUNER_1_CLK
-Text Label 12225 3825 0    50   ~ 0
+Text Label 11900 3825 0    50   ~ 0
 TUNER_2_CLK
 Text Label 14300 3850 0    50   ~ 0
 TUNER_3_CLK
@@ -733,19 +733,15 @@ Wire Wire Line
 Wire Wire Line
 	13650 3700 13650 3425
 Wire Wire Line
-	12225 3825 12225 3850
+	11900 3825 11900 3850
 Wire Wire Line
-	12225 3975 12225 4000
+	11900 3975 11900 4000
 Wire Wire Line
 	10450 3975 11200 3975
 Wire Wire Line
 	11200 3975 11200 4150
 Wire Wire Line
 	11200 4150 12750 4150
-Wire Wire Line
-	12225 3850 12750 3850
-Wire Wire Line
-	12225 4000 12750 4000
 Connection ~ 12650 3425
 Wire Wire Line
 	12650 3425 13650 3425
@@ -1426,4 +1422,34 @@ Text Label 7400 7150 0    50   ~ 0
 D_P
 Text Label 7400 7250 0    50   ~ 0
 D_N
+$Comp
+L Device:R_Small R2
+U 1 1 5F74B0B6
+P 12575 4000
+F 0 "R2" V 12500 3950 50  0000 L CNN
+F 1 "25" V 12650 3950 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 12575 4000 50  0001 C CNN
+F 3 "~" H 12575 4000 50  0001 C CNN
+	1    12575 4000
+	0    1    1    0   
+$EndComp
+$Comp
+L Device:R_Small R1
+U 1 1 5F74B17C
+P 12575 3850
+F 0 "R1" V 12425 3800 50  0000 L CNN
+F 1 "25" V 12500 3800 50  0000 L CNN
+F 2 "Resistor_SMD:R_0603_1608Metric_Pad1.05x0.95mm_HandSolder" H 12575 3850 50  0001 C CNN
+F 3 "~" H 12575 3850 50  0001 C CNN
+	1    12575 3850
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	11900 3850 12475 3850
+Wire Wire Line
+	11900 4000 12475 4000
+Wire Wire Line
+	12675 3850 12750 3850
+Wire Wire Line
+	12675 4000 12750 4000
 $EndSCHEMATC
