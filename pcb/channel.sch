@@ -4,7 +4,7 @@ EELAYER 26 0
 EELAYER END
 $Descr A3 16535 11693
 encoding utf-8
-Sheet 5 5
+Sheet 2 5
 Title ""
 Date ""
 Rev ""
@@ -40,7 +40,7 @@ AR Path="/5FE1AC77/5F485146" Ref="U402"  Part="1"
 AR Path="/5FE2516E/5F485146" Ref="U502"  Part="1" 
 F 0 "U202" H 10000 3050 50  0000 C CNN
 F 1 "MSi001-Q40" H 9975 3200 50  0000 C CNN
-F 2 "Package_DFN_QFN:Texas_S-PVQFN-N40_EP4.15x4.15mm_ThermalVias" V 10875 4850 50  0001 C CNN
+F 2 "Package_DFN_QFN:Texas_S-PVQFN-N40_EP4.15x4.15mm" V 10875 4850 50  0001 C CNN
 F 3 "" V 10875 4850 50  0001 C CNN
 	1    9975 3150
 	1    0    0    -1  
@@ -345,10 +345,8 @@ Wire Wire Line
 Connection ~ 2375 10950
 Wire Wire Line
 	2375 10950 2225 10950
-Text Label 1775 10950 0    50   ~ 0
+Text Label 1750 8700 0    50   ~ 0
 Q_N
-Wire Wire Line
-	2025 10950 1775 10950
 $Comp
 L Device:R_Small R242
 U 1 1 5F49DC49
@@ -403,12 +401,10 @@ Wire Wire Line
 Wire Wire Line
 	2450 10200 2450 10275
 Connection ~ 2125 10200
-Text Label 1550 10175 0    50   ~ 0
+Text Label 1550 7950 0    50   ~ 0
 Q_P
 Wire Wire Line
 	1775 10200 1550 10200
-Wire Wire Line
-	1550 10200 1550 10175
 $Comp
 L opamps:LMV712-N U205
 U 1 1 5F49B0D7
@@ -487,10 +483,8 @@ Wire Wire Line
 Connection ~ 2375 8750
 Wire Wire Line
 	2375 8750 2225 8750
-Text Label 1775 8750 0    50   ~ 0
+Text Label 1750 10900 0    50   ~ 0
 I_N
-Wire Wire Line
-	2025 8750 1775 8750
 $Comp
 L Device:R_Small R237
 U 1 1 5F4A14DC
@@ -545,12 +539,10 @@ Wire Wire Line
 Wire Wire Line
 	2450 8000 2450 8075
 Connection ~ 2125 8000
-Text Label 1550 7975 0    50   ~ 0
+Text Label 1550 10150 0    50   ~ 0
 I_P
 Wire Wire Line
 	1775 8000 1550 8000
-Wire Wire Line
-	1550 8000 1550 7975
 Text Label 11525 2100 0    50   ~ 0
 I_P
 Text Label 11525 2300 0    50   ~ 0
@@ -1794,9 +1786,9 @@ Wire Wire Line
 	1950 1200 1950 1175
 Text Notes 1400 3375 0    50   ~ 0
 This is a pretty poor couping from 50 Ohms to LF high-Z.\nThe resistor can be left out and something else done.
-Text Label 4650 8175 0    50   ~ 0
-BUFFERED_SINGLE_I
 Text Label 4650 10375 0    50   ~ 0
+BUFFERED_SINGLE_I
+Text Label 4650 8175 0    50   ~ 0
 BUFFERED_SINGLE_Q
 Text Label 13725 8675 2    50   ~ 0
 BUFFERED_SINGLE_Q
@@ -3491,4 +3483,16 @@ Text Notes 11875 4125 0    50   ~ 0
 Leave this one U/C
 Wire Wire Line
 	12225 2950 12875 2950
+Wire Wire Line
+	1550 10150 1550 10200
+Wire Wire Line
+	1750 10900 1750 10950
+Wire Wire Line
+	1750 10950 2025 10950
+Wire Wire Line
+	1550 7950 1550 8000
+Wire Wire Line
+	1750 8700 1750 8750
+Wire Wire Line
+	1750 8750 2025 8750
 $EndSCHEMATC
