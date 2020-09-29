@@ -1790,11 +1790,11 @@ Text Label 4650 10375 0    50   ~ 0
 BUFFERED_SINGLE_I
 Text Label 4650 8175 0    50   ~ 0
 BUFFERED_SINGLE_Q
-Text Label 13725 8675 2    50   ~ 0
+Text Label 13725 6600 2    50   ~ 0
 BUFFERED_SINGLE_Q
 Wire Wire Line
 	13725 8675 13900 8675
-Text Label 13725 6600 2    50   ~ 0
+Text Label 13725 8675 2    50   ~ 0
 BUFFERED_SINGLE_I
 Wire Wire Line
 	13900 6600 13725 6600
@@ -1833,7 +1833,7 @@ F 3 "https://www.ti.com/lit/ds/symlink/ads7883.pdf" H 10900 7875 50  0001 C CNN
 	1    10800 8125
 	1    0    0    -1  
 $EndComp
-Text Label 10150 8125 2    50   ~ 0
+Text Label 10150 9075 2    50   ~ 0
 BUFFERED_SINGLE_I
 Wire Wire Line
 	10350 8125 10150 8125
@@ -1942,7 +1942,7 @@ F 3 "https://www.ti.com/lit/ds/symlink/ads7883.pdf" H 10900 8825 50  0001 C CNN
 	1    10800 9075
 	1    0    0    -1  
 $EndComp
-Text Label 10150 9075 2    50   ~ 0
+Text Label 10150 8125 2    50   ~ 0
 BUFFERED_SINGLE_Q
 Wire Wire Line
 	10350 9075 10150 9075
@@ -2106,13 +2106,13 @@ Text Label 14275 3525 2    50   ~ 0
 I_DOUT_local
 Text Label 14275 4350 2    50   ~ 0
 Q_DOUT_local
-Text Label 11325 7975 0    50   ~ 0
-I_DOUT_local
 Text Label 11325 8925 0    50   ~ 0
-Q_DOUT_local
-Text Label 15300 6800 0    50   ~ 0
 I_DOUT_local
+Text Label 11325 7975 0    50   ~ 0
+Q_DOUT_local
 Text Label 15300 8875 0    50   ~ 0
+I_DOUT_local
+Text Label 15300 6800 0    50   ~ 0
 Q_DOUT_local
 Text Notes 14725 2150 0    50   ~ 0
 50 Ohm T-lines
