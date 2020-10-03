@@ -116,8 +116,29 @@ BOOL handle_set_configuration(BYTE cfg) {
 
 
 BOOL handle_vendorcommand(BYTE cmd) {
- LED2_TOGGLE();
- return FALSE; // not handled by handlers
+  // check the bRequest byte in the USB setup packet to determine what to do
+  switch (SETUPDAT[1]) {
+    case 0xB0: // send the control data to channel 1
+      RCAP2L = -500 & 0xff;
+      RCAP2H = (-500 & 0xff00) >> 8;
+      break;
+    case 0xB1: // send the control data to channel 2
+      RCAP2L = -1000 & 0xff;
+      RCAP2H = (-1000 & 0xff00) >> 8;
+      break;
+    case 0xB2: // send the control data to channel 3
+      RCAP2L = -1500 & 0xff;
+      RCAP2H = (-1500 & 0xff00) >> 8;
+      break;
+    case 0xB3: // send the control data to channel 4
+      RCAP2L = -2000 & 0xff;
+      RCAP2H = (-2000 & 0xff00) >> 8;
+      break;
+    default:
+      // We haven't been able to handle it
+      return FALSE;
+  }
+  return TRUE;
 }
 
 /**********************************************************
