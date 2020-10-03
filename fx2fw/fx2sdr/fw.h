@@ -49,6 +49,6 @@
 
 #define LED2_ON()		do { PA1 = LED_POLARITY; } while (0)
 #define LED2_OFF()		do { PA1 = !LED_POLARITY; } while (0)
-#define LED2_TOGGLE()		do { PA0 = !PA1; } while (0)
+#define LED2_TOGGLE()		do { PA1 = !PA1; } while (0)
 
 #endif
