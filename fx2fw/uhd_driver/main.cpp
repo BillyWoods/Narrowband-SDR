@@ -18,6 +18,7 @@
  **/
 
 #include <cstdio>
+#include <cstring>
 #include <cassert>
 #include <libusb-1.0/libusb.h>
 
@@ -65,12 +66,29 @@ int main(int argc, char* argv[]) {
   }
 
   // send control transfer if we have been called with them as args
-  if (argc > 1) {
+  if (argc == 3) {
     // host to device | vendor command | recipient is an endpoint
     uint8_t bmRequestType = (0 << 7) | (2 << 5) | (2 << 0); 
+
+    unsigned int tmp;
+    sscanf(argv[1], "0x%02x", &tmp);
     // we'll use [0xB0..0xB3] for configuring channels 1-4
-    uint8_t bRequest = 0xB0;
-    uint8_t data[12] = "hello world";
+    uint8_t bRequest = tmp & (0xFF);
+
+    uint8_t data[64];
+    int i = 0;
+    int chars_read = 0;
+    for (;i < strlen(argv[2]); i += 2) {
+      int n;
+      sscanf(&(argv[2][i]), "%2hhx%n", data + i/2, &n);
+      chars_read += n;
+    }
+    if (chars_read % 2) {
+      printf("Expected even number of hex chars for data. Zero pad if necessary!\n");
+      return -1;
+    }
+    uint8_t data_len = chars_read / 2; // in bytes
+    //printf("Data is %d bytes long\n%s\n", data_len, (char*) data);
 
     rv = libusb_control_transfer(
       hndl,
@@ -79,10 +97,10 @@ int main(int argc, char* argv[]) {
       0x0000,
       0x0000,
       data,
-      12,
+      data_len,
       100
     );
-  } else {
+  } else if (argc == 1) {
 
     unsigned char buf2[504];
     int nTransferred = 0;
@@ -113,6 +131,8 @@ int main(int argc, char* argv[]) {
         printf("%04x\t", channels[j]);
       printf("\n");
     }
+  } else {
+    printf("Expected ./main [<bRequest> <data>]");
   }
 
   return 0;
