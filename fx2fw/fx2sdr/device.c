@@ -116,7 +116,7 @@ BOOL handle_set_configuration(BYTE cfg) {
 
 
 BOOL handle_vendorcommand(BYTE cmd) {
- // your custom vendor handler code here..
+ LED2_TOGGLE();
  return FALSE; // not handled by handlers
 }
 

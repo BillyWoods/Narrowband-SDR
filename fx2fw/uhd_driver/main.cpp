@@ -64,36 +64,56 @@ int main(int argc, char* argv[]) {
     return -1;
   }
 
-  unsigned char buf2[504];
-  int nTransferred = 0;
-  // TODO: this is blocking; need to look into the async version
-  rv = libusb_bulk_transfer(hndl, EP2_IN_ADDR, buf2, sizeof(buf2), &nTransferred, 500); 
-  if (rv) {
-    printf ( "IN Transfer failed: %d, transferred: %d\n", rv, nTransferred );
-    return rv;
-  }
+  // send control transfer if we have been called with them as args
+  if (argc > 1) {
+    // host to device | vendor command | recipient is an endpoint
+    uint8_t bmRequestType = (0 << 7) | (2 << 5) | (2 << 0); 
+    // we'll use [0xB0..0xB3] for configuring channels 1-4
+    uint8_t bRequest = 0xB0;
+    uint8_t data[12] = "hello world";
 
-  // See what we read in
-  printf("Read in %d bytes\n", nTransferred);
-/*
-  // the raw hex we got
-  for (int i=0;i<nTransferred;++i) {
-    if (i % 12 == 0) printf("\n");
-    printf ( "%02x ", buf2[i] );
-  }
-*/
-  printf("\n");
-  // transposed so we can see what each channel saw
-  printf("n\tCH0\tCH1\tCH2\tCH3\tCH4\tCH5\tCH6\tCH7\n");
-  for (int i = 0; i < 504/12; i++) {
-    uint16_t channels[8];
-    transpose_ADC_reading(buf2 + i*12, channels, false);
-    printf("%d:\t", i);
-    for (int j = 0; j < 8; j++)
-      printf("%04x\t", channels[j]);
-    printf("\n"); 
-  }
+    rv = libusb_control_transfer(
+      hndl,
+      bmRequestType,
+      bRequest,
+      0x0000,
+      0x0000,
+      data,
+      12,
+      100
+    );
+  } else {
 
+    unsigned char buf2[504];
+    int nTransferred = 0;
+    // TODO: this is blocking; need to look into the async version
+    rv = libusb_bulk_transfer(hndl, EP2_IN_ADDR, buf2, sizeof(buf2), &nTransferred, 500);
+    if (rv) {
+      printf ( "IN Transfer failed: %d, transferred: %d\n", rv, nTransferred );
+      return rv;
+    }
+
+    // See what we read in
+    printf("Read in %d bytes\n", nTransferred);
+  /*
+    // the raw hex we got
+    for (int i=0;i<nTransferred;++i) {
+      if (i % 12 == 0) printf("\n");
+      printf ( "%02x ", buf2[i] );
+    }
+  */
+    printf("\n");
+    // transposed so we can see what each channel saw
+    printf("n\tCH0\tCH1\tCH2\tCH3\tCH4\tCH5\tCH6\tCH7\n");
+    for (int i = 0; i < 504/12; i++) {
+      uint16_t channels[8];
+      transpose_ADC_reading(buf2 + i*12, channels, false);
+      printf("%d:\t", i);
+      for (int j = 0; j < 8; j++)
+        printf("%04x\t", channels[j]);
+      printf("\n");
+    }
+  }
 
   return 0;
 }
