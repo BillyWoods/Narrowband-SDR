@@ -66,21 +66,25 @@ int main(int argc, char* argv[]) {
   }
 
   // send control transfer if we have been called with them as args
-  if (argc == 3) {
+  if (argc == 4) {
     // host to device | vendor command | recipient is an endpoint
     uint8_t bmRequestType = (0 << 7) | (2 << 5) | (2 << 0); 
+    uint16_t wValue;
+    uint8_t bRequest;
 
     unsigned int tmp;
     sscanf(argv[1], "0x%02x", &tmp);
-    // we'll use [0xB0..0xB3] for configuring channels 1-4
-    uint8_t bRequest = tmp & (0xFF);
+    bRequest = tmp & (0xFF);
+
+    sscanf(argv[2], "0x%04x", &tmp);
+    wValue = tmp & (0xFFFF);
 
     uint8_t data[64];
     int i = 0;
     int chars_read = 0;
-    for (;i < strlen(argv[2]); i += 2) {
+    for (;i < strlen(argv[3]); i += 2) {
       int n;
-      sscanf(&(argv[2][i]), "%2hhx%n", data + i/2, &n);
+      sscanf(&(argv[3][i]), "%2hhx%n", data + i/2, &n);
       chars_read += n;
     }
     if (chars_read % 2) {
@@ -94,7 +98,7 @@ int main(int argc, char* argv[]) {
       hndl,
       bmRequestType,
       bRequest,
-      0x0000,
+      wValue,
       0x0000,
       data,
       data_len,
@@ -132,7 +136,7 @@ int main(int argc, char* argv[]) {
       printf("\n");
     }
   } else {
-    printf("Expected ./main [<bRequest> <data>]");
+    printf("Expected ./main [<bRequest> <wValue> <data>]");
   }
 
   return 0;

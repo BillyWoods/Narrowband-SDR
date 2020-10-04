@@ -34,6 +34,7 @@
 
 #include "fw.h"
 #include "gpif_dat.h"
+#include "spi.h"
 
 
 
@@ -117,28 +118,33 @@ BOOL handle_set_configuration(BYTE cfg) {
 
 BOOL handle_vendorcommand(BYTE cmd) {
   // check the bRequest byte in the USB setup packet to determine what to do
-  switch (SETUPDAT[1]) {
-    case 0xB0: // send the control data to channel 1
-      RCAP2L = -500 & 0xff;
-      RCAP2H = (-500 & 0xff00) >> 8;
-      break;
-    case 0xB1: // send the control data to channel 2
-      RCAP2L = -1000 & 0xff;
-      RCAP2H = (-1000 & 0xff00) >> 8;
-      break;
-    case 0xB2: // send the control data to channel 3
-      RCAP2L = -1500 & 0xff;
-      RCAP2H = (-1500 & 0xff00) >> 8;
-      break;
-    case 0xB3: // send the control data to channel 4
-      RCAP2L = -2000 & 0xff;
-      RCAP2H = (-2000 & 0xff00) >> 8;
-      break;
-    default:
-      // We haven't been able to handle it
-      return FALSE;
+  if (SETUPDAT[1] == 0xB0) {
+    switch (SETUPDAT[2]) { // the low byte of wValue
+      case 0x01: // send the control data to channel 1
+        RCAP2L = -500 & 0xff;
+        RCAP2H = (-500 & 0xff00) >> 8;
+        //SPI_bit_bang(bmSPI_CPOL | bmSPI_CPHA, (1 << 0), EP0BCL, (BYTE*) EP0BUF);
+        // EP0BCL = 0; // indicate we've read the buffer
+        break;
+      case 0x02: // send the control data to channel 2
+        RCAP2L = -1000 & 0xff;
+        RCAP2H = (-1000 & 0xff00) >> 8;
+        break;
+      case 0x04: // send the control data to channel 3
+        RCAP2L = -1500 & 0xff;
+        RCAP2H = (-1500 & 0xff00) >> 8;
+        break;
+      case 0x08: // send the control data to channel 4
+        RCAP2L = -2000 & 0xff;
+        RCAP2H = (-2000 & 0xff00) >> 8;
+        break;
+      default:
+        // We haven't been able to handle it
+        return FALSE;
+    }
+    return TRUE;
   }
-  return TRUE;
+  return FALSE;
 }
 
 /**********************************************************
@@ -277,6 +283,9 @@ void main_init() {
   gpif_init(WaveData, InitData); // this data comes from gpif_dat.c
   gpif_setflowstate(FlowStates, 2); // our waveform is in bank 2
   gpif_acquisition_prepare();
+
+  // sets the output lines as outputs, and their initial logic levels, etc.
+  SPI_init(bmSPI_CPOL | bmSPI_CPHA);
 }
 
 

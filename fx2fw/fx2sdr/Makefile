@@ -17,7 +17,7 @@
 
 
 # change location of fx2libdir if needed
-SOURCES=fw.c device.c gpif_dat.c
+SOURCES=fw.c device.c gpif_dat.c spi.c
 A51_SOURCES=dscr.a51
 BASENAME=firmware
 
