@@ -119,9 +119,8 @@ BOOL handle_set_configuration(BYTE cfg) {
 BOOL handle_vendorcommand(BYTE cmd) {
   // check the bRequest byte in the USB setup packet to determine what to do
   if (SETUPDAT[1] == 0xB0) {
-    // SETUPDAT[2] is the low byte of wValue
-    //SPI_bit_bang(bmSPI_CPOL | bmSPI_CPHA, SETUPDAT[2], EP0BCL, (BYTE*) EP0BUF);
-    IOD = SETUPDAT[2];
+    // SETUPDAT[2] is the low byte of wValue, which should contain the channel selection
+    SPI_bit_bang(bmSPI_CPOL | bmSPI_CPHA, SETUPDAT[2], EP0BCL, (BYTE*) EP0BUF);
     EP0BCL = 0; // indicate we've read the buffer
     return TRUE;
   }

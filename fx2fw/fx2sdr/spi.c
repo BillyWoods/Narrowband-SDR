@@ -44,7 +44,10 @@ void SPI_bit_bang(BYTE mode, BYTE channel, BYTE length, BYTE* data) {
   BYTE data_index = 0;
 
   // select correct chips
-  IOD &= ~((channel & 0xF) << 1);
+  SPI_CH_SEL_1 = !(channel & 0x01);
+  SPI_CH_SEL_2 = !(channel & 0x02);
+  SPI_CH_SEL_3 = !(channel & 0x04);
+  SPI_CH_SEL_4 = !(channel & 0x08);
 
   for (data_index = 0; data_index < length; data_index++) {
     SPI_byte_write(mode, data[data_index]);
@@ -54,5 +57,8 @@ void SPI_bit_bang(BYTE mode, BYTE channel, BYTE length, BYTE* data) {
   SPI_CLK = (mode & bmSPI_CPOL) && 1;
 
   // put the chip select lines high again
-  IOD |= ((channel & 0xF) << 1);
+  SPI_CH_SEL_1 = 1;
+  SPI_CH_SEL_2 = 1;
+  SPI_CH_SEL_3 = 1;
+  SPI_CH_SEL_4 = 1;
 }
