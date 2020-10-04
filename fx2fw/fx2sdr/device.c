@@ -119,29 +119,10 @@ BOOL handle_set_configuration(BYTE cfg) {
 BOOL handle_vendorcommand(BYTE cmd) {
   // check the bRequest byte in the USB setup packet to determine what to do
   if (SETUPDAT[1] == 0xB0) {
-    switch (SETUPDAT[2]) { // the low byte of wValue
-      case 0x01: // send the control data to channel 1
-        RCAP2L = -500 & 0xff;
-        RCAP2H = (-500 & 0xff00) >> 8;
-        //SPI_bit_bang(bmSPI_CPOL | bmSPI_CPHA, (1 << 0), EP0BCL, (BYTE*) EP0BUF);
-        // EP0BCL = 0; // indicate we've read the buffer
-        break;
-      case 0x02: // send the control data to channel 2
-        RCAP2L = -1000 & 0xff;
-        RCAP2H = (-1000 & 0xff00) >> 8;
-        break;
-      case 0x04: // send the control data to channel 3
-        RCAP2L = -1500 & 0xff;
-        RCAP2H = (-1500 & 0xff00) >> 8;
-        break;
-      case 0x08: // send the control data to channel 4
-        RCAP2L = -2000 & 0xff;
-        RCAP2H = (-2000 & 0xff00) >> 8;
-        break;
-      default:
-        // We haven't been able to handle it
-        return FALSE;
-    }
+    // SETUPDAT[2] is the low byte of wValue
+    //SPI_bit_bang(bmSPI_CPOL | bmSPI_CPHA, SETUPDAT[2], EP0BCL, (BYTE*) EP0BUF);
+    IOD = SETUPDAT[2];
+    EP0BCL = 0; // indicate we've read the buffer
     return TRUE;
   }
   return FALSE;
@@ -178,6 +159,13 @@ static void setup_endpoints(void)
 	/* EP2: Reset the FIFOs. */
 	/* Note: RESETFIFO() gets the EP number WITHOUT bit 7 set/cleared. */
 	RESETFIFO(0x02);
+
+  // gotta fully disable these otherwise we can't access/control PORTD, and
+  // the state of these registers on startup/reset is not consistently 0
+	EP2FIFOCFG = 0;
+	EP4FIFOCFG = 0;
+	EP6FIFOCFG = 0;
+	EP8FIFOCFG = 0;
 
 	/* EP2: Enable AUTOIN mode. Set FIFO width to 8bits. */
 	EP2FIFOCFG = bmAUTOIN;
