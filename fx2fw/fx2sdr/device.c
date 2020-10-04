@@ -36,6 +36,8 @@
 #include "gpif_dat.h"
 #include "spi.h"
 
+// mode 0: clk low in idle, data read on rising edge.
+#define SPI_MODE ((0 << 1) | (0 << 0))
 
 
 BYTE vendor_command;
@@ -120,7 +122,7 @@ BOOL handle_vendorcommand(BYTE cmd) {
   // check the bRequest byte in the USB setup packet to determine what to do
   if (SETUPDAT[1] == 0xB0) {
     // SETUPDAT[2] is the low byte of wValue, which should contain the channel selection
-    SPI_bit_bang(bmSPI_CPOL | bmSPI_CPHA, SETUPDAT[2], EP0BCL, (BYTE*) EP0BUF);
+    SPI_bit_bang_write(SPI_MODE, SETUPDAT[2], EP0BCL, (BYTE*) EP0BUF);
     EP0BCL = 0; // indicate we've read the buffer
     return TRUE;
   }
@@ -272,7 +274,7 @@ void main_init() {
   gpif_acquisition_prepare();
 
   // sets the output lines as outputs, and their initial logic levels, etc.
-  SPI_init(bmSPI_CPOL | bmSPI_CPHA);
+  SPI_init(SPI_MODE);
 }
 
 

@@ -14,7 +14,8 @@
 #define bmSPI_CPHA (1 << 0)
 
 void SPI_init(BYTE mode);
-void SPI_bit_bang(BYTE mode, BYTE channel, BYTE length, BYTE* data);
+// TODO: test modes 1 and 2
+void SPI_bit_bang_write(BYTE mode, BYTE channel, BYTE length, BYTE* data);
 
 #endif
 
