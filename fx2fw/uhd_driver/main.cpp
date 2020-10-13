@@ -106,7 +106,7 @@ int main(int argc, char* argv[]) {
     );
   } else if (argc == 1) {
 
-    unsigned char buf2[2*504];
+    unsigned char buf2[6*504];
     int nTransferred = 0;
 
     for (int i = 0; i < sizeof(buf2) / 504; i++) {
