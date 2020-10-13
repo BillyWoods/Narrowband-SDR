@@ -44,15 +44,24 @@ module SPI_slave(nRST, nCS, SCLK, DOUT);
 	wire [15:0]	word_out = {1'b0, sample, 1'b0, 1'b0, 1'bz};
 	reg [3:0]	bit_ptr = 0; // an index in word_out
 	reg [3:0]	bit_ptr_next;
+	reg [3:0]	sample_hold_counter = 0;
 	
 	parameter increment = 1;
+	parameter sample_hold = 3; // number of read cycles to hold a sample for (slows the incrementing of the sample value)
 	
 	/*
 	From the ADC datasheet: "A high-to-low transition on CS samples
 	 the analog inputs and initiates a new frame."
 	 */
 	always @(negedge nCS) begin
-		sample <= sample_next;
+		if (sample_hold_counter < sample_hold && nRST) begin
+			sample_hold_counter = sample_hold_counter + 1;
+		end
+		else begin
+			sample = sample_next;
+			sample_hold_counter = 1;
+		end
+		
 	end
 	
 	/*
