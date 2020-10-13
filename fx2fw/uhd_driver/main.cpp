@@ -106,13 +106,16 @@ int main(int argc, char* argv[]) {
     );
   } else if (argc == 1) {
 
-    unsigned char buf2[504];
+    unsigned char buf2[2*504];
     int nTransferred = 0;
-    // TODO: this is blocking; need to look into the async version
-    rv = libusb_bulk_transfer(hndl, EP2_IN_ADDR, buf2, sizeof(buf2), &nTransferred, 500);
-    if (rv) {
-      printf ( "IN Transfer failed: %d, transferred: %d\n", rv, nTransferred );
-      return rv;
+
+    for (int i = 0; i < sizeof(buf2) / 504; i++) {
+      // TODO: this is blocking; need to look into the async version
+      rv = libusb_bulk_transfer(hndl, EP2_IN_ADDR, buf2 + i*504, 504, &nTransferred, 500);
+      if (rv) {
+        printf ( "IN Transfer failed: %d, transferred: %d\n", rv, nTransferred );
+        return rv;
+      }
     }
 
     // See what we read in
@@ -127,12 +130,12 @@ int main(int argc, char* argv[]) {
     printf("\n");
     // transposed so we can see what each channel saw
     printf("n\tCH0\tCH1\tCH2\tCH3\tCH4\tCH5\tCH6\tCH7\n");
-    for (int i = 0; i < 504/12; i++) {
+    for (int i = 0; i < sizeof(buf2)/12; i++) {
       uint16_t channels[8];
       transpose_ADC_reading(buf2 + i*12, channels, false);
       printf("%d:\t", i);
       for (int j = 0; j < 8; j++)
-        printf("%04x\t", channels[j]);
+        printf("%03x\t", channels[j]);
       printf("\n");
     }
   } else {
