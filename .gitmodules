@@ -1,0 +1,6 @@
+[submodule "host/libmirisdr-4"]
+	path = host/libmirisdr-4
+	url = https://github.com/f4exb/libmirisdr-4.git
+[submodule "host/libmirisdr"]
+	path = host/libmirisdr
+	url = https://github.com/osmocom/libmirisdr.git
