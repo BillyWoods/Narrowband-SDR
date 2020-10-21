@@ -284,7 +284,6 @@ Wire Wire Line
 Wire Wire Line
 	6000 4350 6000 4425
 Connection ~ 5875 4350
-NoConn ~ 6200 8850
 $Comp
 L power:GND #PWR032
 U 1 1 5F4DE9AC
@@ -1452,4 +1451,17 @@ Wire Wire Line
 	12675 3850 12750 3850
 Wire Wire Line
 	12675 4000 12750 4000
+Text Notes 15450 11050 0    50   ~ 0
+v0.2
+$Comp
+L power:GND #PWR?
+U 1 1 5F90B195
+P 6200 8850
+F 0 "#PWR?" H 6200 8600 50  0001 C CNN
+F 1 "GND" H 6205 8677 50  0000 C CNN
+F 2 "" H 6200 8850 50  0001 C CNN
+F 3 "" H 6200 8850 50  0001 C CNN
+	1    6200 8850
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
