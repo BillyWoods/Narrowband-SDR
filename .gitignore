@@ -188,3 +188,11 @@ fp-info-cache
 # For Mac OSX
 #
 .DS_Store
+
+#
+# LTSpice things
+#
+*.fft
+*.log
+*.raw
+*.plt
