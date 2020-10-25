@@ -6,6 +6,7 @@
 #include <string.h>
 
 #define DEBUG_PRINT
+#define FLIP_CHANNEL_ORDER
 
 const int num_samples = 96000000; // 3 million samples per second from the ADC
 
@@ -61,6 +62,7 @@ int main(void) {
 int main(void) {
 
   fast_transpose(packets, channels);
+  //basic_transpose(packets, channels);
 
   return 0;
 
@@ -76,14 +78,24 @@ int main(void) {
  * when casting from byte arrays to 64-bit ints. This means our shifting and masks look a little
  * different than in the referenced book. 
  * ------------------------------------------------------------------------- */
-const uint8_t BIT_MASKS[8] = { 1, 2, 4, 8, 16, 32, 64, 128 };
-
 inline void basic_transpose(uint8_t in[16], uint16_t out[8]) {
+#ifdef DEBUG_PRINT
+  printf("\nThe input data we're operating on:\n");
+  debug_print((uint8_t*) in, 8, 1);
+#endif
   for (int j = 0; j < 16; j++) {
     for (int k = 0; k < 8; k++) {
-      out[k] = (out[k] << 1) | ((in[j] & BIT_MASKS[k]) != 0);
+#ifdef FLIP_CHANNEL_ORDER
+      out[k] = (out[k] << 1) | ((in[j] & (1<<k)) != 0);
+#else
+      out[k] = (out[k] << 1) | ((in[j] & (1<<(7-k))) != 0);
+#endif
     }
   }
+#ifdef DEBUG_PRINT
+  printf("\nThe transposed output:\n");
+  debug_print((uint8_t*) out, 16, 0);
+#endif
 }
 
 inline void fast_transpose(uint8_t in[16], uint16_t out[8]) {
@@ -155,6 +167,23 @@ inline void _fast_transpose(uint16_t out[8]) {
   out_64[0] = (out_64[0] ^ t) ^ (t1 << 32);
   out_64[1] = (out_64[1] ^ t1) ^ (t >> 32);
   // current channel ordering: LSB {0, 1, 2, 3, 4, 5, 6, 7} MSB
+
+#ifdef FLIP_CHANNEL_ORDER
+  t = (out_64[0] & 0x0000FFFF0000FFFF) << 16;
+  out_64[0] = t | ((out_64[0] & 0xFFFF0000FFFF0000) >> 16);
+  t = (out_64[1] & 0x0000FFFF0000FFFF) << 16;
+  out_64[1] = t | ((out_64[1] & 0xFFFF0000FFFF0000) >> 16);
+
+  t = (out_64[0] & 0x00000000FFFFFFFF) << 32;
+  out_64[0] = t | ((out_64[0] & 0xFFFFFFFF00000000) >> 32);
+  t = (out_64[1] & 0x00000000FFFFFFFF) << 32;
+  out_64[1] = t | ((out_64[1] & 0xFFFFFFFF00000000) >> 32);
+
+  t = out_64[0];
+  out_64[0] = out_64[1];
+  out_64[1] = t;
+#endif
+
 #ifdef DEBUG_PRINT
   printf("\nAfter interleaving the LSBytes in:\n");
   debug_print((uint8_t*) out, 16, 0);
