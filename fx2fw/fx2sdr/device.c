@@ -201,6 +201,8 @@ void gpif_acquisition_prepare() {
   IFCONFIG = 0xEE; // 0xFE for inverted, 0xEE for non-inverted
   // DEBUG: choose 30 MHz clock, inverted
   //IFCONFIG = 0xBE;
+  // DEBUG: choose 30 MHz clock, non-inverted
+  //IFCONFIG = 0xAE;
   SYNCDELAY;
 
   /* Update the status. */
