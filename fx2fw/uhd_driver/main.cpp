@@ -104,7 +104,25 @@ int main(int argc, char* argv[]) {
       data_len,
       100
     );
+  } else if (argc == 2) {
+    // stream to stdout (can pipe this into a file for later analysis, for example)
+
+    unsigned char buf[504];
+    while (1) {
+      int nTransferred = 0;
+      rv = libusb_bulk_transfer(hndl, EP2_IN_ADDR, buf, 504, &nTransferred, 500);
+      if (rv) {
+        printf ( "IN Transfer failed: %d, transferred: %d\n", rv, nTransferred );
+        return rv;
+      }
+      for (int i = 0; i < nTransferred/12; i++) {
+        uint16_t channels[8];
+        transpose_ADC_reading(buf + i*12, channels, false);
+        fwrite(channels, 1, 16, stdout);
+      }
+    }
   } else if (argc == 1) {
+    // print some lines of user-readable data
 
     unsigned char buf2[6*504];
     int nTransferred = 0;
@@ -139,7 +157,7 @@ int main(int argc, char* argv[]) {
       printf("\n");
     }
   } else {
-    printf("Expected ./main [<bRequest> <wValue> <data>]");
+    printf("Expected ./main [<bRequest> <wValue> <data>] or [-s]");
   }
 
   return 0;
