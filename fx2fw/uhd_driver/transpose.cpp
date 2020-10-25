@@ -115,10 +115,28 @@ inline void fast_transpose(uint16_t out[8]) {
   out_64[0] = (out_64[0] ^ t) ^ (t1 << 32);
   out_64[1] = (out_64[1] ^ t1) ^ (t >> 32);
   // current channel ordering: LSB {0, 1, 2, 3, 4, 5, 6, 7} MSB
+
+#ifdef FLIP_CHANNEL_ORDER
+  t = (out_64[0] & 0x0000FFFF0000FFFF) << 16;
+  out_64[0] = t | ((out_64[0] & 0xFFFF0000FFFF0000) >> 16);
+  t = (out_64[1] & 0x0000FFFF0000FFFF) << 16;
+  out_64[1] = t | ((out_64[1] & 0xFFFF0000FFFF0000) >> 16);
+
+  t = (out_64[0] & 0x00000000FFFFFFFF) << 32;
+  out_64[0] = t | ((out_64[0] & 0xFFFFFFFF00000000) >> 32);
+  t = (out_64[1] & 0x00000000FFFFFFFF) << 32;
+  out_64[1] = t | ((out_64[1] & 0xFFFFFFFF00000000) >> 32);
+
+  t = out_64[0];
+  out_64[0] = out_64[1];
+  out_64[1] = t;
+#endif
+
 #ifdef DEBUG_PRINT
   printf("\nAfter interleaving the LSBytes in:\n");
   debug_print((uint8_t*) out, 16, 0);
 #endif
+
 
 }
 

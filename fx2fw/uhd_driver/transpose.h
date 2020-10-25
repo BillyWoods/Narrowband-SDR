@@ -2,6 +2,7 @@
 #define _TRANSPOSE_H
 
 //#define DEBUG_PRINT
+#define FLIP_CHANNEL_ORDER
 
 inline void fast_transpose(uint16_t out[8]);
 
