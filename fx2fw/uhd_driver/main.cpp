@@ -17,9 +17,11 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
  **/
 
-#include <cstdio>
-#include <cstring>
-#include <cassert>
+#include <stdio.h>
+#include <string.h>
+#include <assert.h>
+#include <semaphore.h>
+#include <pthread.h>
 #include <libusb-1.0/libusb.h>
 
 #include "transpose.h"
@@ -28,6 +30,37 @@ const uint16_t VID = 0x04b4;
 const uint16_t PID = 0x8613;
 
 const unsigned char EP2_IN_ADDR = LIBUSB_ENDPOINT_IN | 0x02;
+
+// for asynchronous bulk transfers
+#define N_CONCURRENT 10 
+sem_t transfer_slots;
+sem_t rbuff_slots;
+sem_t fwrite_mutex;
+// this handles each incoming usb packet when using the asynchronous libusb functions
+void async_recv_cb(struct libusb_transfer* transfer) {
+  sem_post(&transfer_slots);
+  sem_wait(&fwrite_mutex);
+
+  for (int i = 0; i < transfer->actual_length/12; i++) {
+    uint16_t channels[8];
+    transpose_ADC_reading(transfer->buffer + i*12, channels, false);
+    fwrite(channels, 1, 16, stdout);
+  }
+
+  sem_post(&fwrite_mutex);
+  sem_post(&rbuff_slots);
+
+  libusb_free_transfer(transfer);
+}
+
+bool libusb_event_thread_run = false;
+void* libusb_event_thread_fn(void* ctx) {
+  while (libusb_event_thread_run) {
+    libusb_handle_events((libusb_context*) ctx);
+  }
+  printf("exiting libusb event thread!\n");
+  return NULL;
+}
 
 int main(int argc, char* argv[]) {
 
@@ -106,21 +139,51 @@ int main(int argc, char* argv[]) {
     );
   } else if (argc == 2) {
     // stream to stdout (can pipe this into a file for later analysis, for example)
+    
+    const int RBUFF_LEN = 2 * N_CONCURRENT;
+    struct libusb_transfer* transfers_rbuff[RBUFF_LEN];
+    unsigned char data_rbuff[RBUFF_LEN][504];
+    int rbuff_head = 0;
 
-    unsigned char buf[504];
+    sem_init(&transfer_slots, 0, N_CONCURRENT);
+    sem_init(&rbuff_slots, 0, RBUFF_LEN);
+    sem_init(&fwrite_mutex, 0, 1);
+
+    pthread_t event_thread;
+    libusb_event_thread_run = true;
+    pthread_create(&event_thread, NULL, libusb_event_thread_fn, ctx);
+
     while (1) {
-      int nTransferred = 0;
-      rv = libusb_bulk_transfer(hndl, EP2_IN_ADDR, buf, 504, &nTransferred, 500);
-      if (rv) {
-        printf ( "IN Transfer failed: %d, transferred: %d\n", rv, nTransferred );
-        return rv;
+      sem_wait(&rbuff_slots);
+      sem_wait(&transfer_slots);
+      
+      // assume these transfers we launch come back in the same order
+      transfers_rbuff[rbuff_head] = libusb_alloc_transfer(0);
+      struct libusb_transfer* transfer = transfers_rbuff[rbuff_head];
+      if (transfer == NULL) {
+        printf("Couldn't allocate transfer.");
+        sem_post(&transfer_slots);
+        sem_post(&rbuff_slots);
+        continue;
       }
-      for (int i = 0; i < nTransferred/12; i++) {
-        uint16_t channels[8];
-        transpose_ADC_reading(buf + i*12, channels, false);
-        fwrite(channels, 1, 16, stdout);
+      libusb_fill_bulk_transfer(transfer, hndl, EP2_IN_ADDR, data_rbuff[rbuff_head], 504,
+                                async_recv_cb, NULL, 100);
+      rv = libusb_submit_transfer(transfer);
+      if (rv != 0) {
+        printf("Couldn't submit transfer: %s\n", libusb_error_name(rv));
+        libusb_free_transfer(transfer);
+        sem_post(&transfer_slots);
+        sem_post(&rbuff_slots);
+        continue;
       }
+
+      rbuff_head = (rbuff_head + 1) % RBUFF_LEN;
     }
+
+    // TODO: proper termination of the event_thread
+    //libusb_event_thread_run = false;
+    //pthread_join(event_thread, NULL);
+    
   } else if (argc == 1) {
     // print some lines of user-readable data
 

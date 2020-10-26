@@ -1,3 +1,3 @@
 driver: main.cpp transpose.cpp
-	g++ -o main main.cpp transpose.cpp -lusb-1.0
+	g++ -o main $^ -lusb-1.0 -lpthread
 
