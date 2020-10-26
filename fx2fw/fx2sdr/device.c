@@ -163,10 +163,14 @@ static void setup_endpoints(void)
 
   // gotta fully disable these otherwise we can't access/control PORTD, and
   // the state of these registers on startup/reset is not consistently 0
-	EP2FIFOCFG = 0;
+	//EP2FIFOCFG = 0;
+	//SYNCDELAY;
 	EP4FIFOCFG = 0;
+	SYNCDELAY;
 	EP6FIFOCFG = 0;
+	SYNCDELAY;
 	EP8FIFOCFG = 0;
+	SYNCDELAY;
 
 	/* EP2: Enable AUTOIN mode. Set FIFO width to 8bits. */
 	EP2FIFOCFG = bmAUTOIN;
@@ -179,6 +183,8 @@ static void setup_endpoints(void)
 	SYNCDELAY;
 
 	/* EP2: Set the GPIF flag to 'full'. */
+  // None of our GPIF waveforms act on the GPIF flag when it is set, however 
+  // we'll set it to assert when GPIF FIFO is full
 	EP2GPIFFLGSEL = (1 << 1) | (0 << 1);
 	SYNCDELAY;
 }
@@ -209,8 +215,8 @@ void gpif_acquisition_prepare() {
   //gpif_acquiring = PREPARED;
 
   // stops the GPIF Flag terminating GPIF transfers (there should be enough logic in our waveform to handle this??)
-	//EP2GPIFPFSTOP = (0 << 0);
-  //SYNCDELAY;
+	EP2GPIFPFSTOP = (0 << 0);
+  SYNCDELAY;
 }
 
 
@@ -327,7 +333,8 @@ void ibn_isr(void) __interrupt IBN_ISR
       RCAP2H = (-3000 & 0xff00) >> 8;
 
       /* gpif waveform does not return to idle state, so will keep going, even if we req. 1 read*/
-      gpif_set_tc16(504);
+      //gpif_set_tc16(504);
+      gpif_set_tc16(65535);
       gpif_fifo_read(0); // start reading into EP 2 (index 0)
     } 
 	}
