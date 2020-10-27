@@ -38,15 +38,20 @@ const unsigned char EP2_IN_ADDR = LIBUSB_ENDPOINT_IN | 0x02;
 sem_t transfer_slots;
 sem_t rbuff_slots;
 sem_t fwrite_mutex;
+bool write_raw_transposed = true;
 // this handles each incoming usb packet when using the asynchronous libusb functions
 void async_recv_cb(struct libusb_transfer* transfer) {
   sem_post(&transfer_slots);
   sem_wait(&fwrite_mutex);
 
-  for (int i = 0; i < transfer->actual_length/12; i++) {
-    uint16_t channels[8];
-    transpose_ADC_reading(transfer->buffer + i*12, channels, false);
-    fwrite(channels, 1, 16, stdout);
+  if (write_raw_transposed) {
+    for (int i = 0; i < transfer->actual_length/12; i++) {
+      uint16_t channels[8];
+      transpose_ADC_reading(transfer->buffer + i*12, channels, false);
+      fwrite(channels, 1, 16, stdout);
+    }
+  } else {
+    fwrite(transfer->buffer, 1, transfer->actual_length, stdout);
   }
 
   sem_post(&fwrite_mutex);
@@ -54,7 +59,6 @@ void async_recv_cb(struct libusb_transfer* transfer) {
 
   libusb_free_transfer(transfer);
 }
-
 bool libusb_event_thread_run = false;
 void* libusb_event_thread_fn(void* ctx) {
   while (libusb_event_thread_run) {
@@ -207,6 +211,11 @@ int main(int argc, char* argv[]) {
 
   if (argc == 2) {
     // stream to stdout (can pipe this into a file for later analysis, for example)
+
+    if (strcmp(argv[1], "-t") == 0)
+      write_raw_transposed = true;
+    else
+      write_raw_transposed = false;
     
     const int RBUFF_LEN = 2 * N_CONCURRENT;
     struct libusb_transfer* transfers_rbuff[RBUFF_LEN];
@@ -288,7 +297,7 @@ int main(int argc, char* argv[]) {
       printf("\n");
     }
   } else {
-    printf("Expected ./main [<bRequest> <wValue> <data>] or [-s]");
+    printf("Expected ./main [<bRequest> <wValue> <data>] or -[s|t]");
   }
 
   return 0;
