@@ -24,6 +24,8 @@
 #include <pthread.h>
 #include <libusb-1.0/libusb.h>
 
+#include "tuner_msi001.h"
+#include "mirisdr_reg.h"
 #include "transpose.h"
 
 const uint16_t VID = 0x04b4;
@@ -62,7 +64,51 @@ void* libusb_event_thread_fn(void* ctx) {
   return NULL;
 }
 
+// for sending data to the MSi001 chips, via a vendor command to the FX2LP
+bool send_over_spi_bridge(libusb_device_handle* hndl, uint8_t channel_sel, uint8_t* data, uint8_t len) {
+  // host to device | vendor command | recipient is an endpoint
+  uint8_t bmRequestType = (0 << 7) | (2 << 5) | (2 << 0); 
+  uint8_t bRequest = 0xB0; // the FX2LP FW recognises this as a command to send the data out over SPI
+  uint16_t wValue = (uint16_t) channel_sel;
+
+  int rv = libusb_control_transfer(
+    hndl,
+    bmRequestType,
+    bRequest,
+    wValue,
+    0x0000,
+    data,
+    len,
+    100
+  );
+
+  if (rv != 0) {
+    printf("Couldn't send over spi bridge. Libusb: %s\n", libusb_error_name(rv));
+    return false;
+  }
+
+  return true;
+}
+// tuner_msi001.c makes calls to this fn to write to the MSi001 tuners
+int mirisdr_reg_write_fn(void *dev, uint8_t reg, uint32_t val) {
+  // FX2LP will send out each byte MSB first
+  // However, we need to swap byte order so MSByte goes first 
+  uint8_t data[3];
+  data[0] = (val >> 15) & 0xFF;
+  data[1] = (val >>  7) & 0xFF;
+  data[2] = (val >>  0) & 0xFF;
+  //send_over_spi_bridge((libusb_device_handle*) dev, 0x0F, data, 3);
+}
+
+// testing out this msi001 tuner library
+void do_msi001_lib_test(libusb_device_handle* hndl) {
+  void* dev = (void*) hndl;
+  uint32_t freq = 101000000;
+  msi001_init(dev, freq);
+}
+
 int main(int argc, char* argv[]) {
+
 
   int rv;
 
@@ -137,7 +183,29 @@ int main(int argc, char* argv[]) {
       data_len,
       100
     );
-  } else if (argc == 2) {
+  } else {
+/*
+    uint8_t bmRequestType = (0 << 7) | (2 << 5) | (2 << 0); 
+    uint8_t data[6] = "hello";
+    rv = libusb_control_transfer(
+      hndl,
+      bmRequestType,
+      0xB0,
+      0x000F,
+      0x0000,
+      data,
+      4,
+      100
+    );
+    if (rv != 0) {
+      printf("Couldn't send over spi bridge. Libusb: %s\n", libusb_error_name(rv));
+      return false;
+    }
+*/
+    do_msi001_lib_test(hndl);
+  }
+
+  if (argc == 2) {
     // stream to stdout (can pipe this into a file for later analysis, for example)
     
     const int RBUFF_LEN = 2 * N_CONCURRENT;
