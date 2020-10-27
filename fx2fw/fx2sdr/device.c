@@ -204,11 +204,13 @@ void gpif_acquisition_prepare() {
   SYNCDELAY;
 
   /* Set IFCONFIG to the correct clock source. */
-  IFCONFIG = 0xEE; // 0xFE for inverted, 0xEE for non-inverted
+  //IFCONFIG = 0xEE; // 0xFE for inverted, 0xEE for non-inverted
   // DEBUG: choose 30 MHz clock, inverted
   //IFCONFIG = 0xBE;
   // DEBUG: choose 30 MHz clock, non-inverted
   //IFCONFIG = 0xAE;
+  // Use an external IFCLOCK
+  IFCONFIG = 0x0E; //(0<<7) | (1<<6) | (0<<5) | (0<<4) | (0<<3) | (1<<2) | (1<<1) | (0<<0); 
   SYNCDELAY;
 
   /* Update the status. */
