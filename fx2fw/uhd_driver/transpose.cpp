@@ -141,7 +141,7 @@ inline void fast_transpose(uint16_t out[8]) {
 }
 
 
-void transpose_ADC_reading_12(uint8_t in[12], uint16_t out[8], bool sign_extend) {
+void transpose_ADC_reading(uint8_t in[12], uint16_t out[8], bool sign_extend) {
   if (sign_extend) {
     memset(out, in[0], 4);
   } else {
@@ -151,10 +151,4 @@ void transpose_ADC_reading_12(uint8_t in[12], uint16_t out[8], bool sign_extend)
   // And we've padded in front of all the MSBs
   memcpy(((uint8_t*) out) + 4, in, 12);
   fast_transpose(out);
-}
-
-void transpose_ADC_reading_16(uint8_t inplace[16]) {
-  // the high-z reading from all the ADC data outputs, make sure it's zero
-  inplace[15] = 0x00;
-  fast_transpose((uint16_t*) inplace);
 }
