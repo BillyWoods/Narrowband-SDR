@@ -34,7 +34,7 @@ const uint16_t PID = 0x8613;
 const unsigned char EP2_IN_ADDR = LIBUSB_ENDPOINT_IN | 0x02;
 
 // for asynchronous bulk transfers
-#define N_CONCURRENT 10 
+#define N_CONCURRENT 1 
 sem_t transfer_slots;
 sem_t rbuff_slots;
 sem_t fwrite_mutex;
@@ -45,10 +45,9 @@ void async_recv_cb(struct libusb_transfer* transfer) {
   sem_wait(&fwrite_mutex);
 
   if (write_raw_transposed) {
-    for (int i = 0; i < transfer->actual_length/13; i++) {
-      uint16_t channels[8];
-      transpose_ADC_reading(transfer->buffer + i*13, channels, false);
-      fwrite(channels, 1, 16, stdout);
+    for (int i = 0; i < transfer->actual_length/16; i++) {
+      transpose_ADC_reading_16(transfer->buffer + i*16);
+      fwrite(transfer->buffer + i*16, 1, 16, stdout);
     }
   } else {
     fwrite(transfer->buffer, 1, transfer->actual_length, stdout);
@@ -219,7 +218,7 @@ int main(int argc, char* argv[]) {
     
     const int RBUFF_LEN = 2 * N_CONCURRENT;
     struct libusb_transfer* transfers_rbuff[RBUFF_LEN];
-    unsigned char data_rbuff[RBUFF_LEN][507];
+    unsigned char data_rbuff[RBUFF_LEN][512];
     int rbuff_head = 0;
 
     sem_init(&transfer_slots, 0, N_CONCURRENT);
@@ -243,7 +242,7 @@ int main(int argc, char* argv[]) {
         sem_post(&rbuff_slots);
         continue;
       }
-      libusb_fill_bulk_transfer(transfer, hndl, EP2_IN_ADDR, data_rbuff[rbuff_head], 507,
+      libusb_fill_bulk_transfer(transfer, hndl, EP2_IN_ADDR, data_rbuff[rbuff_head], 512,
                                 async_recv_cb, NULL, 100);
       rv = libusb_submit_transfer(transfer);
       if (rv != 0) {
@@ -264,12 +263,12 @@ int main(int argc, char* argv[]) {
   } else if (argc == 1) {
     // print some lines of user-readable data
 
-    unsigned char buf2[6*507];
+    unsigned char buf2[6*512];
     int nTransferred = 0;
 
-    for (int i = 0; i < sizeof(buf2) / 507; i++) {
+    for (int i = 0; i < sizeof(buf2) / 512; i++) {
       // TODO: this is blocking; need to look into the async version
-      rv = libusb_bulk_transfer(hndl, EP2_IN_ADDR, buf2 + i*507, 507, &nTransferred, 500);
+      rv = libusb_bulk_transfer(hndl, EP2_IN_ADDR, buf2 + i*512, 512, &nTransferred, 500);
       if (rv) {
         printf ( "IN Transfer failed: %d, transferred: %d\n", rv, nTransferred );
         return rv;
@@ -281,19 +280,19 @@ int main(int argc, char* argv[]) {
   /*
     // the raw hex we got
     for (int i=0;i<nTransferred;++i) {
-      if (i % 13 == 0) printf("\n");
+      if (i % 16 == 0) printf("\n");
       printf ( "%02x ", buf2[i] );
     }
   */
     printf("\n");
     // transposed so we can see what each channel saw
     printf("n\tCH0\tCH1\tCH2\tCH3\tCH4\tCH5\tCH6\tCH7\n");
-    for (int i = 0; i < sizeof(buf2)/13; i++) {
-      uint16_t channels[8];
-      transpose_ADC_reading(buf2 + i*13, channels, false);
+    for (int i = 0; i < sizeof(buf2)/16; i++) {
+      transpose_ADC_reading_16(buf2 + i*16);
+      uint16_t* channels = (uint16_t*) buf2 + i*16;
       printf("%d:\t", i);
       for (int j = 0; j < 8; j++)
-        printf("%03x\t", channels[j]);
+        printf("%04x\t", channels[j]);
       printf("\n");
     }
   } else {

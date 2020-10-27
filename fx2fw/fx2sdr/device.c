@@ -140,7 +140,7 @@ static void setup_endpoints(void)
 	EP2CFG = (1u << 7) |		  /* EP is valid/activated */
 		 (1u << 6) |		  /* EP direction: IN */
 		 (1u << 5) | (0u << 4) |  /* EP Type: bulk */
-		 (1u << 3) |		  /* EP buffer size: 1024 */
+		 (0u << 3) |		  /* EP buffer size: 512 */
 		 (0u << 2) |		  /* Reserved. */
 		 (0u << 1) | (0u << 0);	  /* EP buffering: quad buffering */
 	SYNCDELAY;
@@ -176,10 +176,10 @@ static void setup_endpoints(void)
 	EP2FIFOCFG = bmAUTOIN;
 	SYNCDELAY;
 
-	/* EP2: Auto-commit 13*39 = 507 (0x01FB) byte packets (due to AUTOIN = 1). */
-	EP2AUTOINLENH = 0x01;
+	/* EP2: Auto-commit 16*32 = 512 (0x0200) byte packets (due to AUTOIN = 1). */
+	EP2AUTOINLENH = 0x02;
 	SYNCDELAY;
-	EP2AUTOINLENL = 0xFB;
+	EP2AUTOINLENL = 0x00;
 	SYNCDELAY;
 
 	/* EP2: Set the GPIF flag to 'full'. */
@@ -335,8 +335,8 @@ void ibn_isr(void) __interrupt IBN_ISR
       RCAP2H = (-3000 & 0xff00) >> 8;
 
       /* gpif waveform does not return to idle state, so will keep going, even if we req. 1 read*/
-      //gpif_set_tc16(504);
-      gpif_set_tc32(0xFFFFFFFF);
+      gpif_set_tc16(516);
+      //gpif_set_tc32(0xFFFFFFFF);
       gpif_fifo_read(0); // start reading into EP 2 (index 0)
     } 
 	}
