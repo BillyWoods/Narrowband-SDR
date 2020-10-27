@@ -49,7 +49,7 @@ module FPGA_SPI_slave(_nRST, nCS, SCLK, DOUT,
 	// --------------------------------
 	// For generating the debug clock
 	// --------------------------------
-	parameter divisor = 25;	// actual division ratio is 2 * divisor
+	parameter divisor = 5;	// actual division ratio is 2 * divisor
 	reg [4:0] cnt;  			// 4-bit counter for clock division
 	initial begin
 		cnt = 4'b1111;
