@@ -45,9 +45,9 @@ void async_recv_cb(struct libusb_transfer* transfer) {
   sem_wait(&fwrite_mutex);
 
   if (write_raw_transposed) {
-    for (int i = 0; i < transfer->actual_length/12; i++) {
+    for (int i = 0; i < transfer->actual_length/13; i++) {
       uint16_t channels[8];
-      transpose_ADC_reading(transfer->buffer + i*12, channels, false);
+      transpose_ADC_reading(transfer->buffer + i*13, channels, false);
       fwrite(channels, 1, 16, stdout);
     }
   } else {
@@ -281,16 +281,16 @@ int main(int argc, char* argv[]) {
   /*
     // the raw hex we got
     for (int i=0;i<nTransferred;++i) {
-      if (i % 12 == 0) printf("\n");
+      if (i % 13 == 0) printf("\n");
       printf ( "%02x ", buf2[i] );
     }
   */
     printf("\n");
     // transposed so we can see what each channel saw
     printf("n\tCH0\tCH1\tCH2\tCH3\tCH4\tCH5\tCH6\tCH7\n");
-    for (int i = 0; i < sizeof(buf2)/12; i++) {
+    for (int i = 0; i < sizeof(buf2)/13; i++) {
       uint16_t channels[8];
-      transpose_ADC_reading(buf2 + i*12, channels, false);
+      transpose_ADC_reading(buf2 + i*13, channels, false);
       printf("%d:\t", i);
       for (int j = 0; j < 8; j++)
         printf("%03x\t", channels[j]);
