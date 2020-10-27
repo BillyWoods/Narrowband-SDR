@@ -176,10 +176,10 @@ static void setup_endpoints(void)
 	EP2FIFOCFG = bmAUTOIN;
 	SYNCDELAY;
 
-	/* EP2: Auto-commit 12*42 = 504 (0x01F8) byte packets (due to AUTOIN = 1). */
+	/* EP2: Auto-commit 13*39 = 507 (0x01FB) byte packets (due to AUTOIN = 1). */
 	EP2AUTOINLENH = 0x01;
 	SYNCDELAY;
-	EP2AUTOINLENL = 0xF8;
+	EP2AUTOINLENL = 0xFB;
 	SYNCDELAY;
 
 	/* EP2: Set the GPIF flag to 'full'. */
@@ -204,13 +204,13 @@ void gpif_acquisition_prepare() {
   SYNCDELAY;
 
   /* Set IFCONFIG to the correct clock source. */
-  //IFCONFIG = 0xEE; // 0xFE for inverted, 0xEE for non-inverted
+  IFCONFIG = 0xEE; // 0xFE for inverted, 0xEE for non-inverted
   // DEBUG: choose 30 MHz clock, inverted
   //IFCONFIG = 0xBE;
   // DEBUG: choose 30 MHz clock, non-inverted
   //IFCONFIG = 0xAE;
   // Use an external IFCLOCK
-  IFCONFIG = 0x0E; //(0<<7) | (1<<6) | (0<<5) | (0<<4) | (0<<3) | (1<<2) | (1<<1) | (0<<0); 
+  //IFCONFIG = (0<<7) | (1<<6) | (0<<5) | (0<<4) | (1<<3) | (1<<2) | (1<<1) | (0<<0); 
   SYNCDELAY;
 
   /* Update the status. */

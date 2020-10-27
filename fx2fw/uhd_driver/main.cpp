@@ -219,7 +219,7 @@ int main(int argc, char* argv[]) {
     
     const int RBUFF_LEN = 2 * N_CONCURRENT;
     struct libusb_transfer* transfers_rbuff[RBUFF_LEN];
-    unsigned char data_rbuff[RBUFF_LEN][504];
+    unsigned char data_rbuff[RBUFF_LEN][507];
     int rbuff_head = 0;
 
     sem_init(&transfer_slots, 0, N_CONCURRENT);
@@ -243,7 +243,7 @@ int main(int argc, char* argv[]) {
         sem_post(&rbuff_slots);
         continue;
       }
-      libusb_fill_bulk_transfer(transfer, hndl, EP2_IN_ADDR, data_rbuff[rbuff_head], 504,
+      libusb_fill_bulk_transfer(transfer, hndl, EP2_IN_ADDR, data_rbuff[rbuff_head], 507,
                                 async_recv_cb, NULL, 100);
       rv = libusb_submit_transfer(transfer);
       if (rv != 0) {
@@ -264,12 +264,12 @@ int main(int argc, char* argv[]) {
   } else if (argc == 1) {
     // print some lines of user-readable data
 
-    unsigned char buf2[6*504];
+    unsigned char buf2[6*507];
     int nTransferred = 0;
 
-    for (int i = 0; i < sizeof(buf2) / 504; i++) {
+    for (int i = 0; i < sizeof(buf2) / 507; i++) {
       // TODO: this is blocking; need to look into the async version
-      rv = libusb_bulk_transfer(hndl, EP2_IN_ADDR, buf2 + i*504, 504, &nTransferred, 500);
+      rv = libusb_bulk_transfer(hndl, EP2_IN_ADDR, buf2 + i*507, 507, &nTransferred, 500);
       if (rv) {
         printf ( "IN Transfer failed: %d, transferred: %d\n", rv, nTransferred );
         return rv;
