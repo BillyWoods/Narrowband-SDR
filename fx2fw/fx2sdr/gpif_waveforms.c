@@ -25,7 +25,7 @@
 // CTL 1    = dummy    CMOS        
 // CTL 2    = OE#      CMOS        
 // CTL 3    = CTL3     CMOS        
-// CTL 4    = CTL4     Op Drain    
+// CTL 4    = CTL4     CMOS        
 // CTL 5    = CTL5     CMOS        
                                
 // GPIF Rdy Inputs         
@@ -105,8 +105,8 @@
 // Int Trig Trig Int  No Int    No Int    No Int    No Int    No Int    No Int             
 // IF/Wait  Wait 2    Wait 12   Wait 1    IF        Wait 1    Wait 1    Wait 1             
 //   Term A                               TCXpire                                          
-//   LFunc                                AND                                              
-//   Term B                               TCXpire                                          
+//   LFunc                                OR                                               
+//   Term B                               FIFOFlag                                         
 // Branch1                                ThenIdle                                         
 // Branch0                                Else 0                                           
 // Re-Exec                                Yes                                              
@@ -172,7 +172,7 @@ const char xdata WaveData[128] =
 /* LenBr */ 0x02,     0x0C,     0x01,     0xB8,     0x01,     0x01,     0x01,     0x07,
 /* Opcode*/ 0x10,     0x02,     0x02,     0x01,     0x00,     0x00,     0x00,     0x00,
 /* Output*/ 0x00,     0x00,     0x01,     0x01,     0x01,     0x01,     0x01,     0x01,
-/* LFun  */ 0x00,     0x00,     0x00,     0x2D,     0x00,     0x00,     0x00,     0x3F,
+/* LFun  */ 0x00,     0x00,     0x00,     0x6E,     0x00,     0x00,     0x00,     0x3F,
 // Wave 3 
 /* LenBr */ 0x01,     0x01,     0x01,     0x01,     0x01,     0x01,     0x01,     0x07,
 /* Opcode*/ 0x00,     0x00,     0x00,     0x00,     0x00,     0x00,     0x00,     0x00,
@@ -194,7 +194,7 @@ const char xdata FlowStates[36] =
 // DO NOT EDIT ...                                               
 const char xdata InitData[7] =                                   
 {                                                                
-/* Regs  */ 0xA0,0x10,0x00,0x01,0xCE,0x4E,0x00     
+/* Regs  */ 0xA0,0x00,0x00,0x01,0xCE,0x4E,0x00     
 };                                                               
 // END DO NOT EDIT                                               
                                                                  
