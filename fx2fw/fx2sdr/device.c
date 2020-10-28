@@ -335,8 +335,8 @@ void ibn_isr(void) __interrupt IBN_ISR
       RCAP2H = (-3000 & 0xff00) >> 8;
 
       /* gpif waveform does not return to idle state, so will keep going, even if we req. 1 read*/
-      //gpif_set_tc16(504);
-      gpif_set_tc32(0xFFFFFFFF);
+      gpif_set_tc16(507);
+      //gpif_set_tc32(0xFFFFFFFF);
       gpif_fifo_read(0); // start reading into EP 2 (index 0)
     } 
 	}

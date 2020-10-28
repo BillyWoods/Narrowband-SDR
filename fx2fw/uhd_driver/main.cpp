@@ -44,10 +44,11 @@ void async_recv_cb(struct libusb_transfer* transfer) {
   sem_post(&transfer_slots);
   sem_wait(&fwrite_mutex);
 
-  if (write_raw_transposed) {
+  if (write_raw_transposed && transfer->actual_length == 507) {
+    // TODO: alignment here maybe? might want to figure out where the data is being lost first though
     for (int i = 0; i < transfer->actual_length/13; i++) {
       uint16_t channels[8];
-      transpose_ADC_reading(transfer->buffer + i*13, channels, false);
+      transpose_ADC_reading(transfer->buffer + i*13 + 1, channels, false);
       fwrite(channels, 1, 16, stdout);
     }
   } else {
