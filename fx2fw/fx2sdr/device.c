@@ -333,9 +333,11 @@ void ibn_isr(void) __interrupt IBN_ISR
       RCAP2L = -3000 & 0xff;
       RCAP2H = (-3000 & 0xff00) >> 8;
 
-      /* gpif waveform does not return to idle state, so will keep going, even if we req. 1 read*/
-      //gpif_set_tc16(507);
-      gpif_set_tc32(0xFFFFFFFF);
+      /* gpif waveform will keep going (pausing only when FIFO is full) 
+      until the transaction count is depleted. After TC is depleted there will be
+      a delay in ADC reads until the buffers empty and this interrupt fires again.
+      TODO: can we periodically reset TC while waveform is running? */
+      gpif_set_tc32(13*(0xFFFFFFFF/13)); // highest multiple of 13 to fit in 32 bits
       gpif_fifo_read(0); // start reading into EP 2 (index 0)
     } 
 	}
