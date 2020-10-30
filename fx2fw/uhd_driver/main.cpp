@@ -99,10 +99,10 @@ int mirisdr_reg_write_fn(void *dev, uint8_t reg, uint32_t val) {
   // FX2LP will send out each byte MSB first
   // However, we need to swap byte order so MSByte goes first 
   uint8_t data[3];
-  data[0] = (val >> 15) & 0xFF;
-  data[1] = (val >>  7) & 0xFF;
+  data[0] = (val >> 16) & 0xFF;
+  data[1] = (val >>  8) & 0xFF;
   data[2] = (val >>  0) & 0xFF;
-  //send_over_spi_bridge((libusb_device_handle*) dev, 0x0F, data, 3);
+  send_over_spi_bridge((libusb_device_handle*) dev, 0x0F, data, 3);
 }
 
 // testing out this msi001 tuner library
@@ -113,7 +113,6 @@ void do_msi001_lib_test(libusb_device_handle* hndl) {
 }
 
 int main(int argc, char* argv[]) {
-
 
   int rv;
 
