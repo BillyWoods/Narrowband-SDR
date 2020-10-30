@@ -87,7 +87,7 @@ bool send_over_spi_bridge(libusb_device_handle* hndl, uint8_t channel_sel, uint8
     100
   );
 
-  if (rv != 0) {
+  if (rv != len) {
     printf("Couldn't send over spi bridge. Libusb: %s\n", libusb_error_name(rv));
     return false;
   }
@@ -186,8 +186,15 @@ int main(int argc, char* argv[]) {
       0x0000,
       data,
       data_len,
-      100
+      500
     );
+
+    if (rv != data_len) {
+      printf("Couldn't send. Libusb: %s\n", libusb_error_name(rv));
+      return -1;
+    }
+    return 0;
+
   } else {
 /*
     uint8_t bmRequestType = (0 << 7) | (2 << 5) | (2 << 0); 
