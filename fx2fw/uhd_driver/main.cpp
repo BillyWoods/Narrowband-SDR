@@ -49,7 +49,13 @@ void async_recv_cb(struct libusb_transfer* transfer) {
     for (int i = 0; i < transfer->actual_length/13; i++) {
       uint16_t channels[8];
       transpose_ADC_reading(transfer->buffer + i*13 + 1, channels, false);
-      fwrite(channels, 1, 16, stdout);
+
+      float CH1[2];
+      CH1[0] = (((float) channels[6]) - 2048.f) / 4096.f;
+      CH1[1] = (((float) channels[7]) - 2048.f) / 4096.f;
+      fwrite(CH1, sizeof(float), 2, stdout); // just write channel 1 (hacky)
+
+      //fwrite(channels, 1, 16, stdout);
     }
   } else {
     fwrite(transfer->buffer, 1, transfer->actual_length, stdout);
@@ -108,7 +114,7 @@ int mirisdr_reg_write_fn(void *dev, uint8_t reg, uint32_t val) {
 // testing out this msi001 tuner library
 void do_msi001_lib_test(libusb_device_handle* hndl) {
   void* dev = (void*) hndl;
-  uint32_t freq = 101000000;
+  uint32_t freq = 100000000;
   msi001_init(dev, freq);
 }
 
