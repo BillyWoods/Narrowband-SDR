@@ -66,7 +66,7 @@ void SPI_bit_bang_write(BYTE mode, BYTE channel, BYTE length, BYTE* data) {
   BYTE data_index = 0;
 
   // select correct chips
-  IOD &= (~(channel & 0xF)) << 1;
+  IOD &= ~((channel & 0xF) << 1);
 
   for (data_index = 0; data_index < length; data_index++) {
     SPI_byte_write(mode, data[data_index]);
