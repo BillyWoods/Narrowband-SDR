@@ -38,10 +38,12 @@
 
 // mode 0: clk low in idle, data read on rising edge.
 #define SPI_MODE ((0 << 1) | (0 << 0))
+
 // IFCLOCK setting for 30MHz uninverted clock
 #define IFCLOCK_30M 0xAE
 // IFCLOCK setting for 48MHz uninverted clock
 #define IFCLOCK_48M 0xEE
+BYTE IF_clock_sel = IFCLOCK_30M;
 
 
 BYTE vendor_command;
@@ -137,6 +139,7 @@ BOOL handle_vendorcommand(BYTE cmd) {
 
     // We'll use bRequest == 0xB1 for setting the IFCLOCK for 48 MHz
     // which gives a sample rate of 3 Msps
+    IF_clock_sel = IFCLOCK_48M;
     IFCONFIG = IFCLOCK_48M;
     SYNCDELAY;
     EP0BCL = 0; // indicate we've read the buffer/handled the command
@@ -146,6 +149,7 @@ BOOL handle_vendorcommand(BYTE cmd) {
 
     // We'll use bRequest == 0xB2 for setting the IFCLOCK for 30 MHz
     // which gives a sample rate of 1.875 Msps
+    IF_clock_sel = IFCLOCK_30M;
     IFCONFIG = IFCLOCK_30M;
     SYNCDELAY;
     EP0BCL = 0; // indicate we've read the buffer/handled the command
@@ -230,13 +234,14 @@ void gpif_acquisition_prepare() {
   SYNCDELAY;
 
   /* Set IFCONFIG to the correct clock source. */
-  IFCONFIG = 0xEE; // 0xFE for inverted, 0xEE for non-inverted
+  //IFCONFIG = 0xEE; // 0xFE for inverted, 0xEE for non-inverted
   // DEBUG: choose 30 MHz clock, inverted
   //IFCONFIG = 0xBE;
   // DEBUG: choose 30 MHz clock, non-inverted
   //IFCONFIG = 0xAE;
   // Use an external IFCLOCK
   //IFCONFIG = (0<<7) | (1<<6) | (0<<5) | (0<<4) | (1<<3) | (1<<2) | (1<<1) | (0<<0); 
+  IFCONFIG = IF_clock_sel;
   SYNCDELAY;
 
   /* Update the status. */
