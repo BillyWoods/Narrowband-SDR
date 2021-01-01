@@ -181,7 +181,7 @@ int main(int argc, char* argv[]) {
       return -1;
     }
     uint8_t data_len = chars_read / 2; // in bytes
-    //printf("Data is %d bytes long\n%s\n", data_len, (char*) data);
+    printf("Sending bRequest 0x%02x with wValue: 0x%04x, Data is %d bytes long\n%s\n", bRequest, wValue, data_len, (char*) data);
 
     rv = libusb_control_transfer(
       hndl,
@@ -191,7 +191,7 @@ int main(int argc, char* argv[]) {
       0x0000,
       data,
       data_len,
-      500
+      1000
     );
 
     if (rv != data_len) {

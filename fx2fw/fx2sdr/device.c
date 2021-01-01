@@ -38,6 +38,10 @@
 
 // mode 0: clk low in idle, data read on rising edge.
 #define SPI_MODE ((0 << 1) | (0 << 0))
+// IFCLOCK setting for 30MHz uninverted clock
+#define IFCLOCK_30M 0xAE
+// IFCLOCK setting for 48MHz uninverted clock
+#define IFCLOCK_48M 0xEE
 
 
 BYTE vendor_command;
@@ -119,13 +123,36 @@ BOOL handle_set_configuration(BYTE cfg) {
 
 
 BOOL handle_vendorcommand(BYTE cmd) {
+  LED2_TOGGLE();
+
   // check the bRequest byte in the USB setup packet to determine what to do
   if (SETUPDAT[1] == 0xB0) {
+
     // SETUPDAT[2] is the low byte of wValue, which should contain the channel selection
     SPI_bit_bang_write(SPI_MODE, SETUPDAT[2], EP0BCL, (BYTE*) EP0BUF);
     EP0BCL = 0; // indicate we've read the buffer
     return TRUE;
+
+  } else if (SETUPDAT[1] == 0XB1) {
+
+    // We'll use bRequest == 0xB1 for setting the IFCLOCK for 48 MHz
+    // which gives a sample rate of 3 Msps
+    IFCONFIG = IFCLOCK_48M;
+    SYNCDELAY;
+    EP0BCL = 0; // indicate we've read the buffer/handled the command
+    return TRUE;
+
+  } else if (SETUPDAT[1] == 0XB2) {
+
+    // We'll use bRequest == 0xB2 for setting the IFCLOCK for 30 MHz
+    // which gives a sample rate of 1.875 Msps
+    IFCONFIG = IFCLOCK_30M;
+    SYNCDELAY;
+    EP0BCL = 0; // indicate we've read the buffer/handled the command
+    return TRUE;
+
   }
+
   return FALSE;
 }
 
